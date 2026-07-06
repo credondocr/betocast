@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="circleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a3a8a"/>
+      <stop offset="50%" style="stop-color:#0B2467"/>
+      <stop offset="100%" style="stop-color:#061539"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#c0c8d8"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Circle -->
+  <circle cx="200" cy="200" r="180" fill="url(#circleGrad)"/>
+  
+  <!-- B with orbit -->
+  <g transform="translate(90, 120)">
+    <!-- Orbit ring around B -->
+    <ellipse cx="45" cy="55" rx="52" ry="38" fill="none" stroke="#CC2020" stroke-width="5" transform="rotate(-15, 45, 55)" opacity="0.9"/>
+    
+    <!-- Letter B -->
+    <text x="0" y="95" font-family="Arial Black, Impact, sans-serif" font-size="110" font-weight="900" fill="url(#textGrad)" letter-spacing="-2">B</text>
+  </g>
+  
+  <!-- BETO text -->
+  <text x="145" y="215" font-family="Arial Black, Impact, sans-serif" font-size="52" font-weight="900" fill="#ffffff" letter-spacing="4" font-style="italic">BETO</text>
+  
+  <!-- Red underline -->
+  <rect x="145" y="225" width="180" height="6" rx="3" fill="#CC2020"/>
+  
+  <!-- CASTING text -->
+  <text x="145" y="275" font-family="Arial Black, Impact, sans-serif" font-size="42" font-weight="900" fill="#ffffff" letter-spacing="6" font-style="italic">CASTING</text>
+</svg>
