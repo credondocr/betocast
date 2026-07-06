@@ -42,8 +42,8 @@ services:
     build:
       context: ./admin
       dockerfile: Dockerfile
-      args:
-        VITE_API_URL: https://betocast.redondolab.dev
+    environment:
+      - VITE_API_URL=https://betocast.redondolab.dev
     ports:
       - "5173:80"
     depends_on:
@@ -60,7 +60,6 @@ services:
       - 'traefik.http.routers.betocast-admin-secure.tls.certresolver=http'
       - 'traefik.http.routers.betocast-admin-secure.service=betocast-admin'
       - 'traefik.http.routers.betocast-admin-secure.middlewares=crowdsec'
-      # CrowdSec
       # HTTP → HTTPS
       - 'traefik.http.routers.betocast-admin-http.rule=Host(`admin.betocast.redondolab.dev`)'
       - 'traefik.http.routers.betocast-admin-http.entrypoints=web'
