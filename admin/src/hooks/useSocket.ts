@@ -6,7 +6,8 @@ let socket: Socket | null = null;
 
 function getSocket(): Socket {
   if (!socket) {
-    socket = io(window.location.origin, { path: '/socket.io' });
+    const apiUrl = import.meta.env.VITE_API_URL || window.location.origin;
+    socket = io(apiUrl, { path: '/socket.io' });
   }
   return socket;
 }
@@ -35,7 +36,8 @@ export function useSocket(streamId: string | null) {
     const s = getSocket();
     s.emit('join-stream', streamId);
 
-    fetch(`/api/streams/${streamId}/votes`)
+    const apiUrl = import.meta.env.VITE_API_URL || '';
+    fetch(`${apiUrl}/api/streams/${streamId}/votes`)
       .then(r => r.json())
       .then((data: any) => {
         if (data.results) setVoteResults(data.results);

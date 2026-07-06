@@ -11,19 +11,68 @@ services:
       - PORT=3001
       - DB_PATH=/app/data/betocast.db
       - YOUTUBE_API_KEY=${YOUTUBE_API_KEY}
+      - ADMIN_URL=https://admin.betocast.redondolab.dev
     volumes:
       - db-data:/app/data
     restart: unless-stopped
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      - 'traefik.http.services.betocast.loadbalancer.server.port=3001'
+      # HTTPS
+      - 'traefik.http.routers.betocast-secure.rule=Host(`betocast.redondolab.dev`)'
+      - 'traefik.http.routers.betocast-secure.entrypoints=websecure'
+      - 'traefik.http.routers.betocast-secure.tls=true'
+      - 'traefik.http.routers.betocast-secure.tls.certresolver=http'
+      - 'traefik.http.routers.betocast-secure.service=betocast'
+      - 'traefik.http.routers.betocast-secure.middlewares=crowdsec'
+      # CrowdSec
+      - 'traefik.http.middlewares.crowdsec.forwardauth.address=http://crowdsec-bouncer-traefik:8080/api/v1/forwardAuth'
+      - 'traefik.http.middlewares.crowdsec.forwardauth.trustForwardHeader=true'
+      # HTTP → HTTPS
+      - 'traefik.http.routers.betocast-http.rule=Host(`betocast.redondolab.dev`)'
+      - 'traefik.http.routers.betocast-http.entrypoints=web'
+      - 'traefik.http.routers.betocast-http.middlewares=betocast-redirect-https'
+      - 'traefik.http.middlewares.betocast-redirect-https.redirectscheme.scheme=https'
+      - 'traefik.http.middlewares.betocast-redirect-https.redirectscheme.permanent=true'
+    networks:
+      - proxy
 
   admin:
     build:
       context: ./admin
       dockerfile: Dockerfile
+      args:
+        VITE_API_URL: https://betocast.redondolab.dev
     ports:
       - "5173:80"
     depends_on:
       - backend
     restart: unless-stopped
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      - 'traefik.http.services.betocast-admin.loadbalancer.server.port=80'
+      # HTTPS
+      - 'traefik.http.routers.betocast-admin-secure.rule=Host(`admin.betocast.redondolab.dev`)'
+      - 'traefik.http.routers.betocast-admin-secure.entrypoints=websecure'
+      - 'traefik.http.routers.betocast-admin-secure.tls=true'
+      - 'traefik.http.routers.betocast-admin-secure.tls.certresolver=http'
+      - 'traefik.http.routers.betocast-admin-secure.service=betocast-admin'
+      - 'traefik.http.routers.betocast-admin-secure.middlewares=crowdsec'
+      # CrowdSec
+      # HTTP → HTTPS
+      - 'traefik.http.routers.betocast-admin-http.rule=Host(`admin.betocast.redondolab.dev`)'
+      - 'traefik.http.routers.betocast-admin-http.entrypoints=web'
+      - 'traefik.http.routers.betocast-admin-http.middlewares=betocast-admin-redirect-https'
+      - 'traefik.http.middlewares.betocast-admin-redirect-https.redirectscheme.scheme=https'
+      - 'traefik.http.middlewares.betocast-admin-redirect-https.redirectscheme.permanent=true'
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
 
 volumes:
   db-data:
