@@ -42,8 +42,6 @@ services:
     build:
       context: ./admin
       dockerfile: Dockerfile
-    environment:
-      - VITE_API_URL=https://betocast.redondolab.dev
     ports:
       - "5173:80"
     depends_on:
