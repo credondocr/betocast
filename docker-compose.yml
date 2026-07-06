@@ -7,11 +7,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3001:3001"
+    env_file:
+      - .env
     environment:
       - PORT=3001
       - DB_PATH=/app/data/betocast.db
-      - YOUTUBE_API_KEY=${YOUTUBE_API_KEY}
-      - ADMIN_URL=https://admin.betocast.redondolab.dev
     volumes:
       - db-data:/app/data
     restart: unless-stopped
