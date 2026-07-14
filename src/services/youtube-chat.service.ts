@@ -19,7 +19,7 @@ interface ChatMessagesResponse {
   items: LiveChatMessage[];
   nextPageToken?: string;
   pollingIntervalMillis?: number;
-  error?: { code: number; message: string };
+  error?: { code: number; message: string; errors: any[] };
 }
 
 export interface YouTubeChatMessage {
@@ -28,6 +28,25 @@ export interface YouTubeChatMessage {
   userName: string;
   message: string;
   timestamp: string;
+}
+
+async function handleYouTubeError(res: Response, context: string): Promise<never> {
+  const body = await res.json().catch(() => null) as any;
+  const msg = body?.error?.message || res.statusText;
+  const code = body?.error?.code || res.status;
+
+  if (res.status === 403) {
+    if (msg.toLowerCase().includes('quota')) {
+      throw new Error(`YouTube API: Cuota agotada (403). Intenta de mañana o usa una API key diferente.`);
+    }
+    throw new Error(`YouTube API: Acceso denegado (403) - ${msg}`);
+  }
+
+  if (res.status === 404) {
+    throw new Error(`YouTube API: ${context} no encontrado (404)`);
+  }
+
+  throw new Error(`YouTube API: ${msg} (${res.status})`);
 }
 
 export async function getLiveChatId(videoId: string): Promise<string | null> {
@@ -43,7 +62,7 @@ export async function getLiveChatId(videoId: string): Promise<string | null> {
   const res = await fetch(url);
 
   if (!res.ok) {
-    throw new Error(`YouTube API HTTP ${res.status}`);
+    await handleYouTubeError(res, 'Video');
   }
 
   const data = await res.json() as any;
@@ -80,7 +99,7 @@ export async function getChatMessages(
   const res = await fetch(url);
 
   if (!res.ok) {
-    throw new Error(`YouTube API HTTP ${res.status}`);
+    await handleYouTubeError(res, 'Chat messages');
   }
 
   const data = await res.json() as ChatMessagesResponse;
