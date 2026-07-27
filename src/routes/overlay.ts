@@ -12,7 +12,7 @@ overlayRouter.get('/:id', (req, res) => {
   const showNames = params.showNames !== 'false';
   const showTotal = params.showTotal !== 'false';
   const showHeader = params.showHeader !== 'false';
-  const fontSize = parseInt(params.fontSize as string) || 14;
+  const fontSize = parseInt(params.fontSize as string) || 20;
   const maxDisplay = parseInt(params.max as string) || stream.max_pilots_display || 10;
   const chromaKey = params.chromaKey === 'true';
   const bgColor = chromaKey ? '#00FF00' : 'transparent';
@@ -72,7 +72,7 @@ function getOverlayHtml(stream: any, opts: {
     }
     .logo-bar .brand .red { color: #CC2020; }
     .logo-bar .subtitle {
-      font-size: 12px;
+      font-size: 16px;
       font-weight: 700;
       color: rgba(255,255,255,0.5);
       letter-spacing: 3px;
@@ -93,9 +93,9 @@ function getOverlayHtml(stream: any, opts: {
     }
     .bar-rank {
       width: 22px;
-      font-size: 11px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.3);
+      font-size: 15px;
+      font-weight: 900;
+      color: rgba(255,255,255,0.6);
       text-align: center;
     }
     .bar-rank.top-1 { color: #fbbf24; }
@@ -137,9 +137,9 @@ function getOverlayHtml(stream: any, opts: {
       border-radius: 6px;
     }
     .bar-fill .count-inside {
-      font-size: 13px;
-      font-weight: 800;
-      color: rgba(255,255,255,0.95);
+      font-size: 17px;
+      font-weight: 900;
+      color: #ffffff;
       text-shadow: 0 1px 3px rgba(0,0,0,0.6);
       position: relative;
       z-index: 1;
@@ -147,18 +147,18 @@ function getOverlayHtml(stream: any, opts: {
     }
     .bar-info { display: flex; flex-direction: column; width: 100px; gap: 1px; }
     .bar-driver {
-      font-size: 12px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.7);
+      font-size: 16px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       text-shadow: 0 1px 3px rgba(0,0,0,0.5);
     }
     .bar-votes {
-      font-size: 13px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.45);
+      font-size: 17px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.85);
       font-variant-numeric: tabular-nums;
     }
 
@@ -170,14 +170,14 @@ function getOverlayHtml(stream: any, opts: {
       gap: 16px;
       margin-top: 12px;
       padding-top: 10px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      font-size: 15px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      font-size: 20px;
       font-weight: 700;
-      color: rgba(255,255,255,0.4);
+      color: #ffffff;
       animation: fadeIn 0.8s ease-out;
     }
     .footer .stat { display: flex; align-items: center; gap: 4px; }
-    .footer .stat strong { color: rgba(255,255,255,0.8); font-weight: 900; font-size: 16px; }
+    .footer .stat strong { color: #ffffff; font-weight: 900; font-size: 21px; }
 
     /* ── Empty state ── */
     .empty { text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.25); }
@@ -192,7 +192,7 @@ function getOverlayHtml(stream: any, opts: {
       background: #0B2467;
       border: 1px solid #1a3a8a;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 17px;
       font-weight: 700;
       color: rgba(255,255,255,0.7);
       line-height: 1.4;
@@ -201,7 +201,7 @@ function getOverlayHtml(stream: any, opts: {
     .vote-hint strong {
       color: #CC2020;
       font-weight: 900;
-      font-size: 14px;
+      font-size: 20px;
     }
     .vote-hint-icon {
       margin-right: 3px;
@@ -310,8 +310,7 @@ function getOverlayHtml(stream: any, opts: {
     function updateFooter(totalVotes, totalVoters) {
       var footer = document.getElementById('footer');
       if (footer) {
-        footer.innerHTML = '<span class="stat"><strong>' + totalVotes + '</strong> votos</span>' +
-          '<span class="stat"><strong>' + totalVoters + '</strong> participantes</span>';
+        footer.innerHTML = '<span class="stat"><strong>' + totalVotes + '</strong> votos</span>';
       }
     }
 
