@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { config } from '../config.js';
 import * as voteService from '../services/vote.service.js';
 import { parseVote } from '../services/chat-parser.js';
 import { MockChatService } from '../services/mock-chat.service.js';
@@ -17,7 +18,7 @@ syncRouter.get('/:id/sync', async (req, res) => {
   if (!stream) return res.status(404).json({ error: 'Stream no encontrado' });
 
   // Try YouTube first if we have a video_id and API key
-  if (stream.video_id && process.env.YOUTUBE_API_KEY) {
+  if (stream.video_id && config.youtubeApiKey) {
     try {
       const result = await syncYouTubeChat(req.params.id, stream.video_id);
       return res.json(result);

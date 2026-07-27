@@ -165,6 +165,8 @@ function extractVideoId(url: string): string | null {
   if (match) return match[1];
   const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
   if (shortMatch) return shortMatch[1];
+  const liveMatch = url.match(/youtube\.com\/live\/([a-zA-Z0-9_-]{11})/);
+  if (liveMatch) return liveMatch[1];
   if (/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
   return null;
 }
