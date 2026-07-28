@@ -79,6 +79,15 @@ export async function getLiveChatId(videoId: string): Promise<string | null> {
   return video?.liveStreamingDetails?.activeLiveChatId || null;
 }
 
+export async function isStreamLive(videoId: string): Promise<boolean> {
+  try {
+    const liveChatId = await getLiveChatId(videoId);
+    return liveChatId !== null;
+  } catch {
+    return false;
+  }
+}
+
 export async function getChatMessages(
   liveChatId: string,
   pageToken?: string

@@ -51,8 +51,10 @@ export function Dashboard() {
               <div key={stream.id} className="bg-card border border-border rounded-xl p-5 hover:border-beto-red/40 transition-colors">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <div className={`w-2 h-2 rounded-full ${stream.status === 'active' ? 'bg-green-500' : stream.status === 'paused' ? 'bg-yellow-500' : 'bg-red-500'}`} />
-                    <span className="text-xs text-muted-foreground uppercase">{stream.status}</span>
+                    <div className={`w-2 h-2 rounded-full ${stream.is_live ? 'bg-green-500 animate-pulse' : stream.status === 'paused' ? 'bg-yellow-500' : 'bg-gray-500'}`} />
+                    <span className="text-xs text-muted-foreground uppercase">
+                      {stream.is_live ? 'EN VIVO' : stream.status === 'paused' ? 'PAUSADO' : 'OFFLINE'}
+                    </span>
                   </div>
                   <button onClick={() => handleDelete(stream.id)} className="text-muted-foreground hover:text-red-500 transition-colors">
                     <Trash2 size={14} />
@@ -63,21 +65,29 @@ export function Dashboard() {
                 <p className="text-sm text-muted-foreground mb-4">ID: {stream.id}</p>
 
                 <div className="flex items-center gap-2">
-                  <Link
-                    to={`/stream/${stream.id}`}
-                    className="flex-1 flex items-center justify-center gap-2 bg-secondary hover:bg-accent text-foreground font-medium py-2 rounded-lg transition-colors text-sm"
-                  >
-                    <Radio size={14} />
-                    Ver en vivo
-                  </Link>
-                  <a
-                    href={`/overlay/live`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 border border-border hover:border-beto-red/40 text-foreground font-medium py-2 px-3 rounded-lg transition-colors text-sm"
-                  >
-                    <ExternalLink size={14} />
-                  </a>
+                  {stream.is_live ? (
+                    <>
+                      <Link
+                        to={`/stream/${stream.id}`}
+                        className="flex-1 flex items-center justify-center gap-2 bg-beto-red hover:bg-red-700 text-white font-medium py-2 rounded-lg transition-colors text-sm"
+                      >
+                        <Radio size={14} />
+                        Ver en vivo
+                      </Link>
+                      <a
+                        href={`/overlay/live`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 border border-border hover:border-beto-red/40 text-foreground font-medium py-2 px-3 rounded-lg transition-colors text-sm"
+                      >
+                        <ExternalLink size={14} />
+                      </a>
+                    </>
+                  ) : (
+                    <div className="flex-1 flex items-center justify-center gap-2 bg-secondary text-muted-foreground font-medium py-2 rounded-lg text-sm">
+                      No está en vivo
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

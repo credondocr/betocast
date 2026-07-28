@@ -8,6 +8,7 @@ export interface Stream {
   last_message_id: string | null;
   created_at: string;
   updated_at: string;
+  is_live?: boolean;
 }
 
 export interface Pilot {

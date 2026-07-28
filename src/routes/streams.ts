@@ -3,6 +3,7 @@ import { queryOne } from '../db/helpers.js';
 import { getIo } from '../websocket/index.js';
 import * as voteService from '../services/vote.service.js';
 import * as predictionService from '../services/prediction.service.js';
+import { isStreamLive } from '../services/youtube-chat.service.js';
 
 export const streamsRouter = Router();
 
@@ -12,9 +13,21 @@ streamsRouter.get('/live', (req, res) => {
   res.json(stream);
 });
 
-streamsRouter.get('/', (req, res) => {
+streamsRouter.get('/', async (req, res) => {
   const streams = voteService.listStreams();
-  res.json(streams);
+
+  // Verificar estado real de YouTube para cada stream
+  const streamsWithLiveStatus = await Promise.all(
+    streams.map(async (stream) => {
+      let isLive = false;
+      if (stream.video_id) {
+        isLive = await isStreamLive(stream.video_id);
+      }
+      return { ...stream, is_live: isLive };
+    })
+  );
+
+  res.json(streamsWithLiveStatus);
 });
 
 streamsRouter.get('/:id', (req, res) => {
