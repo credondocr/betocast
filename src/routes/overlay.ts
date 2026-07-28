@@ -189,7 +189,7 @@ function getOverlayHtml(stream: any, opts: {
       z-index: 1;
       font-variant-numeric: tabular-nums;
     }
-    .bar-info { display: flex; flex-direction: column; width: 200px; gap: 2px; }
+    .bar-info { display: flex; flex-direction: column; width: 120px; gap: 2px; text-align: right; }
     .bar-driver {
       font-size: 20px;
       font-weight: 800;
@@ -478,7 +478,6 @@ function getPredictOverlayHtml(stream: any, opts: {
     }
     .container {
       padding: 20px 30px;
-      max-width: 700px;
       width: 100%;
       display: flex;
       flex-direction: column;
