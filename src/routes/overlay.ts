@@ -85,6 +85,7 @@ function getUnifiedOverlayHtml(stream: any, opts: {
     }
     .container {
       padding: 20px 30px;
+      max-width: 900px;
       width: 100%;
       display: flex;
       flex-direction: column;
