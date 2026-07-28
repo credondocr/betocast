@@ -93,69 +93,73 @@ function getOverlayHtml(stream: any, opts: {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      margin-bottom: 14px;
+      gap: 12px;
+      margin-bottom: 20px;
       animation: fadeSlideDown 0.6s ease-out;
     }
     .logo-bar img {
-      height: 40px;
-      width: 40px;
+      height: 48px;
+      width: 48px;
     }
     .logo-bar .brand {
-      font-size: 22px;
+      font-size: 28px;
       font-weight: 900;
       font-style: italic;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
       color: #ffffff;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      -webkit-text-stroke: 1px rgba(0,0,0,0.3);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
     .logo-bar .brand .red { color: #CC2020; }
     .logo-bar .subtitle {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 700;
-      color: rgba(255,255,255,0.5);
-      letter-spacing: 3px;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 4px;
       text-transform: uppercase;
-      margin-top: 1px;
+      margin-top: 2px;
+      -webkit-text-stroke: 0.5px rgba(0,0,0,0.3);
     }
 
     /* ── Chart ── */
-    .chart { display: flex; flex-direction: column; gap: 7px; }
+    .chart { display: flex; flex-direction: column; gap: 10px; width: 100%; }
 
     /* ── Bar Row ── */
     .bar-row {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
       will-change: transform;
     }
     .bar-rank {
-      width: 22px;
-      font-size: 15px;
+      width: 32px;
+      font-size: 20px;
       font-weight: 900;
-      color: rgba(255,255,255,0.6);
+      color: rgba(255,255,255,0.7);
       text-align: center;
+      -webkit-text-stroke: 0.5px rgba(0,0,0,0.4);
     }
     .bar-rank.top-1 { color: #fbbf24; }
     .bar-rank.top-2 { color: #9ca3af; }
     .bar-rank.top-3 { color: #d97706; }
     .bar-number {
-      width: 48px;
-      font-size: ${opts.fontSize + 2}px;
-      font-weight: 800;
+      width: 56px;
+      font-size: ${opts.fontSize + 4}px;
+      font-weight: 900;
       text-align: right;
       font-variant-numeric: tabular-nums;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+      -webkit-text-stroke: 1px rgba(0,0,0,0.4);
+      text-shadow: 0 2px 6px rgba(0,0,0,0.6);
     }
     .bar-track {
       flex: 1;
       height: ${opts.barHeight}px;
-      background: rgba(0,0,0,0.35);
-      border-radius: 6px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 8px;
       overflow: hidden;
       position: relative;
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 2px solid rgba(255,255,255,0.1);
     }
     .bar-fill {
       height: 100%;
@@ -164,7 +168,7 @@ function getOverlayHtml(stream: any, opts: {
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      padding-right: 10px;
+      padding-right: 12px;
       transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
       min-width: 0;
     }
@@ -172,32 +176,35 @@ function getOverlayHtml(stream: any, opts: {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.12) 100%);
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 100%);
       border-radius: 6px;
     }
     .bar-fill .count-inside {
-      font-size: 17px;
+      font-size: 20px;
       font-weight: 900;
       color: #ffffff;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+      -webkit-text-stroke: 1px rgba(0,0,0,0.5);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.7);
       position: relative;
       z-index: 1;
       font-variant-numeric: tabular-nums;
     }
-    .bar-info { display: flex; flex-direction: column; width: 180px; gap: 1px; }
+    .bar-info { display: flex; flex-direction: column; width: 200px; gap: 2px; }
     .bar-driver {
-      font-size: 16px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.9);
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      -webkit-text-stroke: 0.5px rgba(0,0,0,0.4);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
     }
     .bar-votes {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 800;
-      color: rgba(255,255,255,0.85);
+      color: rgba(255,255,255,0.9);
+      -webkit-text-stroke: 0.5px rgba(0,0,0,0.3);
       font-variant-numeric: tabular-nums;
     }
 
@@ -206,45 +213,50 @@ function getOverlayHtml(stream: any, opts: {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 16px;
-      margin-top: 12px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(255,255,255,0.15);
-      font-size: 20px;
-      font-weight: 700;
+      gap: 20px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 2px solid rgba(255,255,255,0.2);
+      font-size: 22px;
+      font-weight: 800;
       color: #ffffff;
+      -webkit-text-stroke: 0.5px rgba(0,0,0,0.3);
+      text-shadow: 0 2px 6px rgba(0,0,0,0.5);
       animation: fadeIn 0.8s ease-out;
+      width: 100%;
     }
-    .footer .stat { display: flex; align-items: center; gap: 4px; }
-    .footer .stat strong { color: #ffffff; font-weight: 900; font-size: 21px; }
+    .footer .stat { display: flex; align-items: center; gap: 6px; }
+    .footer .stat strong { color: #ffffff; font-weight: 900; font-size: 24px; -webkit-text-stroke: 1px rgba(0,0,0,0.3); }
 
     /* ── Empty state ── */
-    .empty { text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.25); }
-    .empty .icon { font-size: 32px; margin-bottom: 8px; }
-    .empty p { font-size: 13px; }
+    .empty { text-align: center; padding: 50px 30px; color: rgba(255,255,255,0.4); }
+    .empty .icon { font-size: 40px; margin-bottom: 12px; }
+    .empty p { font-size: 18px; font-weight: 700; -webkit-text-stroke: 0.5px rgba(0,0,0,0.3); }
 
     /* ── Vote hint ── */
     .vote-hint {
       text-align: center;
-      margin-top: 10px;
-      padding: 6px 12px;
-      background: #0B2467;
-      border: 1px solid #1a3a8a;
-      border-radius: 6px;
-      font-size: 17px;
+      margin-top: 16px;
+      padding: 10px 20px;
+      background: rgba(11,36,103,0.9);
+      border: 2px solid rgba(26,58,138,0.8);
+      border-radius: 10px;
+      font-size: 18px;
       font-weight: 700;
-      color: rgba(255,255,255,0.7);
-      line-height: 1.4;
+      color: #ffffff;
+      -webkit-text-stroke: 0.5px rgba(0,0,0,0.3);
+      line-height: 1.5;
       display: inline-block;
     }
     .vote-hint strong {
       color: #CC2020;
       font-weight: 900;
-      font-size: 20px;
+      font-size: 22px;
+      -webkit-text-stroke: 1px rgba(0,0,0,0.4);
     }
     .vote-hint-icon {
-      margin-right: 3px;
-      font-size: 10px;
+      margin-right: 4px;
+      font-size: 14px;
     }
 
     /* ── Animations ── */
@@ -333,7 +345,7 @@ function getOverlayHtml(stream: any, opts: {
         var isFlash = flashCars.indexOf(item.car_number) !== -1;
         var rankClass = getRankClass(i);
         var countInside = pct > 20 ? '<span class="count-inside">' + item.count + '</span>' : '';
-        var displayName = item.driver_name ? '#' + item.car_number + ' - ' + item.driver_name : '#' + item.car_number;
+        var displayName = item.driver_name ? item.driver_name : '';
         var rightSide = showNames
           ? '<div class="bar-info"><div class="bar-driver">' + displayName + '</div><div class="bar-votes">' + item.count + ' votos</div></div>'
           : '<div class="bar-votes" style="width:60px">' + item.count + '</div>';
@@ -460,8 +472,18 @@ function getPredictOverlayHtml(stream: any, opts: {
       color: white;
       min-height: 100vh;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .container { padding: 16px 20px; }
+    .container {
+      padding: 20px 30px;
+      max-width: 700px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
     /* ── Header ── */
     .header {
@@ -493,13 +515,13 @@ function getPredictOverlayHtml(stream: any, opts: {
     }
 
     /* ── Chart ── */
-    .chart { display: flex; flex-direction: column; gap: 7px; }
+    .chart { display: flex; flex-direction: column; gap: 10px; width: 100%; }
 
     /* ── Bar Row ── */
     .bar-row {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
       will-change: transform;
     }
@@ -514,11 +536,11 @@ function getPredictOverlayHtml(stream: any, opts: {
     .bar-track {
       flex: 1;
       height: ${opts.barHeight}px;
-      background: rgba(0,0,0,0.35);
-      border-radius: 6px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 8px;
       overflow: hidden;
       position: relative;
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 2px solid rgba(255,255,255,0.1);
     }
     .bar-fill {
       height: 100%;
@@ -527,7 +549,7 @@ function getPredictOverlayHtml(stream: any, opts: {
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      padding-right: 10px;
+      padding-right: 12px;
       transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
       min-width: 0;
     }
@@ -535,27 +557,29 @@ function getPredictOverlayHtml(stream: any, opts: {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.12) 100%);
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 100%);
       border-radius: 6px;
     }
     .bar-fill .count-inside {
-      font-size: 17px;
+      font-size: 20px;
       font-weight: 900;
       color: #ffffff;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+      -webkit-text-stroke: 1px rgba(0,0,0,0.5);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.7);
       position: relative;
       z-index: 1;
       font-variant-numeric: tabular-nums;
     }
-    .bar-info { display: flex; flex-direction: column; width: 180px; gap: 1px; }
+    .bar-info { display: flex; flex-direction: column; width: 200px; gap: 2px; }
     .bar-driver {
-      font-size: 16px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.9);
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      -webkit-text-stroke: 0.5px rgba(0,0,0,0.4);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
     }
     .bar-predictions {
       font-size: 17px;
@@ -569,17 +593,20 @@ function getPredictOverlayHtml(stream: any, opts: {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 16px;
-      margin-top: 12px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(255,255,255,0.15);
-      font-size: 20px;
-      font-weight: 700;
+      gap: 20px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 2px solid rgba(255,255,255,0.2);
+      font-size: 22px;
+      font-weight: 800;
       color: #ffffff;
+      -webkit-text-stroke: 0.5px rgba(0,0,0,0.3);
+      text-shadow: 0 2px 6px rgba(0,0,0,0.5);
       animation: fadeIn 0.8s ease-out;
+      width: 100%;
     }
-    .footer .stat { display: flex; align-items: center; gap: 4px; }
-    .footer .stat strong { color: #ffffff; font-weight: 900; font-size: 21px; }
+    .footer .stat { display: flex; align-items: center; gap: 6px; }
+    .footer .stat strong { color: #ffffff; font-weight: 900; font-size: 24px; -webkit-text-stroke: 1px rgba(0,0,0,0.3); }
 
     /* ── Winners ── */
     .winners {
@@ -615,9 +642,9 @@ function getPredictOverlayHtml(stream: any, opts: {
     }
 
     /* ── Empty state ── */
-    .empty { text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.25); }
-    .empty .icon { font-size: 32px; margin-bottom: 8px; }
-    .empty p { font-size: 13px; }
+    .empty { text-align: center; padding: 50px 30px; color: rgba(255,255,255,0.4); }
+    .empty .icon { font-size: 40px; margin-bottom: 12px; }
+    .empty p { font-size: 18px; font-weight: 700; -webkit-text-stroke: 0.5px rgba(0,0,0,0.3); }
 
     /* ── Hint ── */
     .hint {
@@ -715,7 +742,7 @@ function getPredictOverlayHtml(stream: any, opts: {
         var color = item.color || getColor(i);
         var isFlash = flashCars.indexOf(item.car_number) !== -1;
         var countInside = pct > 20 ? '<span class="count-inside">' + item.count + '</span>' : '';
-        var displayName = item.driver_name ? '#' + item.car_number + ' - ' + item.driver_name : '#' + item.car_number;
+        var displayName = item.driver_name ? item.driver_name : '';
         var rightSide = showNames
           ? '<div class="bar-info"><div class="bar-driver">' + displayName + '</div><div class="bar-predictions">' + item.count + ' predicciones</div></div>'
           : '<div class="bar-predictions" style="width:60px">' + item.count + '</div>';
