@@ -20,11 +20,6 @@ export function initSocket(httpServer: HttpServer): Server {
       socket.leave(`stream:${streamId}`);
     });
 
-    socket.on('set-overlay-mode', (data: { streamId: string; mode: string }) => {
-      io.to(`stream:${data.streamId}`).emit('overlay-mode-changed', { mode: data.mode });
-      console.log(`[WS] Overlay mode changed to ${data.mode} for stream:${data.streamId}`);
-    });
-
     socket.on('disconnect', () => {
       console.log(`[WS] Cliente desconectado: ${socket.id}`);
     });

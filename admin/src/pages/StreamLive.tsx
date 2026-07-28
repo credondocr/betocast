@@ -19,10 +19,9 @@ export function StreamLive() {
   const [syncMessage, setSyncMessage] = useState<{ type: 'ok' | 'error'; text: string } | null>(null);
   const [chromaKey, setChromaKey] = useState(true);
   const [autoSync, setAutoSync] = useState(false);
-  const [overlayMode, setOverlayMode] = useState<'votes' | 'predictions'>('votes');
   const autoSyncRef = useRef(autoSync);
   autoSyncRef.current = autoSync;
-  const { voteResults, stats, chatMessages, connected, socket } = useSocket(id || null);
+  const { voteResults, stats, chatMessages, connected } = useSocket(id || null);
 
   useEffect(() => {
     if (!id) return;
@@ -53,27 +52,16 @@ export function StreamLive() {
     return () => clearInterval(interval);
   }, [autoSync, id]);
 
-  const overlayUrl = `${window.location.origin}/overlay/live${chromaKey ? '?chromaKey=true' : ''}`;
-
-  const handleModeChange = (mode: 'votes' | 'predictions') => {
-    console.log('Mode change requested:', mode);
-    setOverlayMode(mode);
-    if (id && socket) {
-      console.log('Emitting set-overlay-mode:', { streamId: id, mode });
-      socket.emit('set-overlay-mode', { streamId: id, mode });
-    } else {
-      console.log('Missing id or socket:', { id, socket: !!socket });
-    }
+  const openOverlay = (mode: 'votes' | 'predictions') => {
+    const url = `${window.location.origin}/overlay/live?mode=${mode}${chromaKey ? '&chromaKey=true' : ''}`;
+    window.open(url, 'betocast-overlay', 'width=600,height=500,menubar=no,toolbar=no,location=no,status=no');
   };
 
-  const copyOverlayUrl = () => {
-    navigator.clipboard.writeText(overlayUrl);
+  const copyOverlayUrl = (mode: 'votes' | 'predictions') => {
+    const url = `${window.location.origin}/overlay/live?mode=${mode}${chromaKey ? '&chromaKey=true' : ''}`;
+    navigator.clipboard.writeText(url);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const openOverlay = () => {
-    window.open(overlayUrl, 'betocast-overlay', 'width=600,height=500,menubar=no,toolbar=no,location=no,status=no');
   };
 
   const toggleMock = async () => {
@@ -164,34 +152,26 @@ export function StreamLive() {
               {mockRunning ? 'Detener Mock' : 'Iniciar Mock'}
             </button>
             <button
-              onClick={openOverlay}
-              className="flex items-center gap-1.5 bg-secondary hover:bg-accent text-foreground px-3 py-1.5 rounded-lg text-sm transition-colors"
+              onClick={() => openOverlay('votes')}
+              className="flex items-center gap-1.5 bg-beto-red hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
             >
               <ExternalLink size={14} />
-              Abrir Overlay
+              Overlay Votos
             </button>
-            <div className="flex items-center gap-1 bg-secondary rounded-lg p-1">
-              <button
-                onClick={() => handleModeChange('votes')}
-                className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
-                  overlayMode === 'votes'
-                    ? 'bg-beto-red text-white'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                Votaciones
-              </button>
-              <button
-                onClick={() => handleModeChange('predictions')}
-                className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
-                  overlayMode === 'predictions'
-                    ? 'bg-purple-600 text-white'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                Predicciones
-              </button>
-            </div>
+            <button
+              onClick={() => openOverlay('predictions')}
+              className="flex items-center gap-1.5 bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
+            >
+              <ExternalLink size={14} />
+              Overlay Predicciones
+            </button>
+            <button
+              onClick={() => copyOverlayUrl('votes')}
+              className="flex items-center gap-1.5 bg-secondary hover:bg-accent text-foreground px-3 py-1.5 rounded-lg text-sm transition-colors"
+            >
+              <Copy size={14} />
+              {copied ? '¡Copiado!' : 'Copiar URL'}
+            </button>
             <label className="flex items-center gap-1.5 bg-secondary px-3 py-1.5 rounded-lg text-sm cursor-pointer select-none">
               <input
                 type="checkbox"
@@ -201,13 +181,6 @@ export function StreamLive() {
               />
               <span className="text-muted-foreground">Croma Key</span>
             </label>
-            <button
-              onClick={copyOverlayUrl}
-              className="flex items-center gap-1.5 bg-beto-red hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
-            >
-              <Copy size={14} />
-              {copied ? '¡Copiado!' : 'Overlay URL'}
-            </button>
           </div>
         </div>
 
