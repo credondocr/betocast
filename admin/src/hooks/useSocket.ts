@@ -71,5 +71,5 @@ export function useSocket(streamId: string | null) {
 
   const resetChat = useCallback(() => setChatMessages([]), []);
 
-  return { voteResults, stats, chatMessages, connected, resetChat };
+  return { voteResults, stats, chatMessages, connected, resetChat, socket: getSocket() };
 }

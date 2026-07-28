@@ -495,6 +495,19 @@ function getUnifiedOverlayHtml(stream: any, opts: {
         socket.emit('join-stream', streamId);
       });
 
+      socket.on('overlay-mode-changed', function(data) {
+        if (data.streamId !== streamId) return;
+        mode = data.mode;
+        isPredictions = mode === 'predictions';
+        colorList = isPredictions ? predictColors : colors;
+        countLabel = isPredictions ? 'predicciones' : 'votos';
+        apiEndpoint = isPredictions ? '/predictions' : '/votes';
+        counts = {};
+        currentData = [];
+        debug('mode changed to ' + mode);
+        loadInitial();
+      });
+
       if (isPredictions) {
         socket.on('prediction-update', function(data) {
           if (data.streamId !== streamId) return;

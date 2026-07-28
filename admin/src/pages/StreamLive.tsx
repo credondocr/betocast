@@ -19,10 +19,10 @@ export function StreamLive() {
   const [syncMessage, setSyncMessage] = useState<{ type: 'ok' | 'error'; text: string } | null>(null);
   const [chromaKey, setChromaKey] = useState(true);
   const [autoSync, setAutoSync] = useState(false);
-  const [overlayMode, setOverlayMode] = useState<'votes' | 'predictions' | 'winners'>('votes');
+  const [overlayMode, setOverlayMode] = useState<'votes' | 'predictions'>('votes');
   const autoSyncRef = useRef(autoSync);
   autoSyncRef.current = autoSync;
-  const { voteResults, stats, chatMessages, connected } = useSocket(id || null);
+  const { voteResults, stats, chatMessages, connected, socket } = useSocket(id || null);
 
   useEffect(() => {
     if (!id) return;
@@ -53,7 +53,14 @@ export function StreamLive() {
     return () => clearInterval(interval);
   }, [autoSync, id]);
 
-  const overlayUrl = `${window.location.origin}/overlay/live?mode=${overlayMode}${chromaKey ? '&chromaKey=true' : ''}`;
+  const overlayUrl = `${window.location.origin}/overlay/live${chromaKey ? '?chromaKey=true' : ''}`;
+
+  const handleModeChange = (mode: 'votes' | 'predictions') => {
+    setOverlayMode(mode);
+    if (id && socket) {
+      socket.emit('set-overlay-mode', { streamId: id, mode });
+    }
+  };
 
   const copyOverlayUrl = () => {
     navigator.clipboard.writeText(overlayUrl);
@@ -159,15 +166,28 @@ export function StreamLive() {
               <ExternalLink size={14} />
               Abrir Overlay
             </button>
-            <select
-              value={overlayMode}
-              onChange={e => setOverlayMode(e.target.value as 'votes' | 'predictions' | 'winners')}
-              className="bg-secondary border border-border rounded-lg px-3 py-1.5 text-foreground text-sm focus:outline-none focus:border-beto-red"
-            >
-              <option value="votes">Votaciones</option>
-              <option value="predictions">Predicciones</option>
-              <option value="winners">Ganadores</option>
-            </select>
+            <div className="flex items-center gap-1 bg-secondary rounded-lg p-1">
+              <button
+                onClick={() => handleModeChange('votes')}
+                className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                  overlayMode === 'votes'
+                    ? 'bg-beto-red text-white'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                Votaciones
+              </button>
+              <button
+                onClick={() => handleModeChange('predictions')}
+                className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                  overlayMode === 'predictions'
+                    ? 'bg-purple-600 text-white'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                Predicciones
+              </button>
+            </div>
             <label className="flex items-center gap-1.5 bg-secondary px-3 py-1.5 rounded-lg text-sm cursor-pointer select-none">
               <input
                 type="checkbox"
