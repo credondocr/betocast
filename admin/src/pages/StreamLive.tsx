@@ -19,6 +19,7 @@ export function StreamLive() {
   const [syncMessage, setSyncMessage] = useState<{ type: 'ok' | 'error'; text: string } | null>(null);
   const [chromaKey, setChromaKey] = useState(true);
   const [autoSync, setAutoSync] = useState(false);
+  const [overlayMode, setOverlayMode] = useState<'votes' | 'predictions' | 'winners'>('votes');
   const autoSyncRef = useRef(autoSync);
   autoSyncRef.current = autoSync;
   const { voteResults, stats, chatMessages, connected } = useSocket(id || null);
@@ -52,7 +53,7 @@ export function StreamLive() {
     return () => clearInterval(interval);
   }, [autoSync, id]);
 
-  const overlayUrl = `${window.location.origin}/overlay/live${chromaKey ? '?chromaKey=true' : ''}`;
+  const overlayUrl = `${window.location.origin}/overlay/live?mode=${overlayMode}${chromaKey ? '&chromaKey=true' : ''}`;
 
   const copyOverlayUrl = () => {
     navigator.clipboard.writeText(overlayUrl);
@@ -158,6 +159,15 @@ export function StreamLive() {
               <ExternalLink size={14} />
               Abrir Overlay
             </button>
+            <select
+              value={overlayMode}
+              onChange={e => setOverlayMode(e.target.value as 'votes' | 'predictions' | 'winners')}
+              className="bg-secondary border border-border rounded-lg px-3 py-1.5 text-foreground text-sm focus:outline-none focus:border-beto-red"
+            >
+              <option value="votes">Votaciones</option>
+              <option value="predictions">Predicciones</option>
+              <option value="winners">Ganadores</option>
+            </select>
             <label className="flex items-center gap-1.5 bg-secondary px-3 py-1.5 rounded-lg text-sm cursor-pointer select-none">
               <input
                 type="checkbox"
