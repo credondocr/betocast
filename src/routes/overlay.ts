@@ -78,8 +78,15 @@ function getOverlayHtml(stream: any, opts: {
       color: white;
       min-height: 100vh;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .container { padding: 16px 20px; }
+    .container {
+      padding: 20px 30px;
+      max-width: 700px;
+      width: 100%;
+    }
 
     /* ── Logo ── */
     .logo-bar {
