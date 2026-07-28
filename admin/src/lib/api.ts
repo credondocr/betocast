@@ -16,7 +16,7 @@ export const api = {
   streams: {
     list: () => request<Stream[]>('/streams'),
     get: (id: string) => request<Stream>(`/streams/${id}`),
-    create: (data: { youtube_url: string; title?: string }) =>
+    create: (data: { youtube_url: string; title?: string; category_id?: number }) =>
       request<Stream>('/streams', { method: 'POST', body: JSON.stringify(data) }),
     update: (id: string, data: Partial<Stream>) =>
       request<Stream>(`/streams/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
@@ -41,6 +41,27 @@ export const api = {
         body: JSON.stringify({ car_number: carNumber }),
       }),
   },
+  categories: {
+    list: () => request<Category[]>('/categories'),
+    get: (id: number) => request<Category>(`/categories/${id}`),
+    create: (data: { name: string; description?: string }) =>
+      request<Category>('/categories', { method: 'POST', body: JSON.stringify(data) }),
+    update: (id: number, data: { name?: string; description?: string }) =>
+      request<Category>(`/categories/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    delete: (id: number) =>
+      request<{ success: boolean }>(`/categories/${id}`, { method: 'DELETE' }),
+    pilots: {
+      list: (categoryId: number) => request<CategoryPilot[]>(`/categories/${categoryId}/pilots`),
+      add: (categoryId: number, data: { car_number: string; driver_name?: string; color?: string }) =>
+        request<CategoryPilot>(`/categories/${categoryId}/pilots`, { method: 'POST', body: JSON.stringify(data) }),
+      addBulk: (categoryId: number, pilots: Array<{ car_number: string; driver_name?: string; color?: string }>) =>
+        request<{ success: boolean; added: number }>(`/categories/${categoryId}/pilots/bulk`, { method: 'POST', body: JSON.stringify({ pilots }) }),
+      remove: (categoryId: number, carNumber: string) =>
+        request<{ success: boolean }>(`/categories/${categoryId}/pilots/${carNumber}`, { method: 'DELETE' }),
+      clear: (categoryId: number) =>
+        request<{ success: boolean; removed: number }>(`/categories/${categoryId}/pilots`, { method: 'DELETE' }),
+    },
+  },
   sync: {
     pull: (streamId: string) => request<any>(`/streams/${streamId}/sync`),
   },
@@ -52,4 +73,4 @@ export const api = {
   },
 };
 
-import type { Stream, Pilot, VoteResponse, PredictionResponse, PredictionResolveResponse } from '@/types';
+import type { Stream, Pilot, VoteResponse, PredictionResponse, PredictionResolveResponse, Category, CategoryPilot } from '@/types';

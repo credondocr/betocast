@@ -7,6 +7,7 @@ import { initSocket } from './websocket/index.js';
 import { streamsRouter } from './routes/streams.js';
 import { syncRouter } from './routes/sync.js';
 import { overlayRouter } from './routes/overlay.js';
+import { categoriesRouter } from './routes/categories.js';
 
 async function main() {
   await initDb();
@@ -21,6 +22,7 @@ async function main() {
 
   app.use('/api/streams', streamsRouter);
   app.use('/api/streams', syncRouter);
+  app.use('/api/categories', categoriesRouter);
   app.use('/overlay', overlayRouter);
 
   app.get('/api/health', (req, res) => {

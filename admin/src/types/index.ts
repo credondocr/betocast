@@ -77,3 +77,19 @@ export interface PredictionResolveResponse {
   winners: PredictionWinner[];
   message: string;
 }
+
+export interface Category {
+  id: number;
+  name: string;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CategoryPilot {
+  id: number;
+  category_id: number;
+  car_number: string;
+  driver_name: string | null;
+  color: string;
+}

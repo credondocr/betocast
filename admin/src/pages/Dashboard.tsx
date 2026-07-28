@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '@/lib/api';
 import type { Stream } from '@/types';
-import { Radio, ExternalLink, Plus, Trash2 } from 'lucide-react';
+import { Radio, ExternalLink, Plus, Trash2, Folder } from 'lucide-react';
 
 export function Dashboard() {
   const [streams, setStreams] = useState<Stream[]>([]);
@@ -30,13 +30,22 @@ export function Dashboard() {
               <p className="text-muted-foreground mt-0.5 text-sm">Panel de administración</p>
             </div>
           </div>
-          <Link
-            to="/stream/new"
-            className="flex items-center gap-2 bg-beto-red hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors"
-          >
-            <Plus size={18} />
-            Nuevo Stream
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              to="/categories"
+              className="flex items-center gap-2 bg-secondary hover:bg-accent text-foreground font-medium px-4 py-2 rounded-lg transition-colors"
+            >
+              <Folder size={18} />
+              Categorias
+            </Link>
+            <Link
+              to="/stream/new"
+              className="flex items-center gap-2 bg-beto-red hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors"
+            >
+              <Plus size={18} />
+              Nuevo Stream
+            </Link>
+          </div>
         </div>
 
         {streams.length === 0 ? (

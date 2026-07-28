@@ -177,7 +177,7 @@ function getOverlayHtml(stream: any, opts: {
       z-index: 1;
       font-variant-numeric: tabular-nums;
     }
-    .bar-info { display: flex; flex-direction: column; width: 100px; gap: 1px; }
+    .bar-info { display: flex; flex-direction: column; width: 180px; gap: 1px; }
     .bar-driver {
       font-size: 16px;
       font-weight: 700;
@@ -326,8 +326,9 @@ function getOverlayHtml(stream: any, opts: {
         var isFlash = flashCars.indexOf(item.car_number) !== -1;
         var rankClass = getRankClass(i);
         var countInside = pct > 20 ? '<span class="count-inside">' + item.count + '</span>' : '';
+        var displayName = item.driver_name ? '#' + item.car_number + ' - ' + item.driver_name : '#' + item.car_number;
         var rightSide = showNames
-          ? '<div class="bar-info"><div class="bar-driver">' + (item.driver_name || '') + '</div><div class="bar-votes">' + item.count + ' votos</div></div>'
+          ? '<div class="bar-info"><div class="bar-driver">' + displayName + '</div><div class="bar-votes">' + item.count + ' votos</div></div>'
           : '<div class="bar-votes" style="width:60px">' + item.count + '</div>';
 
         html += '<div class="bar-row' + (isFlash ? ' flash' : '') + '">' +
@@ -539,7 +540,7 @@ function getPredictOverlayHtml(stream: any, opts: {
       z-index: 1;
       font-variant-numeric: tabular-nums;
     }
-    .bar-info { display: flex; flex-direction: column; width: 100px; gap: 1px; }
+    .bar-info { display: flex; flex-direction: column; width: 180px; gap: 1px; }
     .bar-driver {
       font-size: 16px;
       font-weight: 700;
@@ -707,8 +708,9 @@ function getPredictOverlayHtml(stream: any, opts: {
         var color = item.color || getColor(i);
         var isFlash = flashCars.indexOf(item.car_number) !== -1;
         var countInside = pct > 20 ? '<span class="count-inside">' + item.count + '</span>' : '';
+        var displayName = item.driver_name ? '#' + item.car_number + ' - ' + item.driver_name : '#' + item.car_number;
         var rightSide = showNames
-          ? '<div class="bar-info"><div class="bar-driver">' + (item.driver_name || '') + '</div><div class="bar-predictions">' + item.count + ' predicciones</div></div>'
+          ? '<div class="bar-info"><div class="bar-driver">' + displayName + '</div><div class="bar-predictions">' + item.count + ' predicciones</div></div>'
           : '<div class="bar-predictions" style="width:60px">' + item.count + '</div>';
 
         html += '<div class="bar-row' + (isFlash ? ' flash' : '') + '">' +

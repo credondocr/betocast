@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '@/lib/api';
-import { ArrowLeft, Plus, X } from 'lucide-react';
+import type { Category } from '@/types';
+import { ArrowLeft, Plus, X, Folder } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface PilotInput {
@@ -19,6 +20,12 @@ export function StreamSetup() {
   const [pilots, setPilots] = useState<PilotInput[]>([]);
   const [maxDisplay, setMaxDisplay] = useState(10);
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+
+  useEffect(() => {
+    api.categories.list().then(setCategories).catch(console.error);
+  }, []);
 
   const addPilot = () => {
     const num = (pilots.length + 1).toString().padStart(3, '0');
@@ -41,14 +48,26 @@ export function StreamSetup() {
 
     setLoading(true);
     try {
-      const stream = await api.streams.create({ youtube_url: youtubeUrl, title: title || undefined });
-      for (const p of pilots) {
-        if (p.car_number.trim()) {
-          await api.pilots.add(stream.id, { car_number: p.car_number, driver_name: p.driver_name || undefined, color: p.color });
+      // Si hay una categoria seleccionada, usar sus pilotos
+      if (selectedCategoryId) {
+        const stream = await api.streams.create({
+          youtube_url: youtubeUrl,
+          title: title || undefined,
+          category_id: selectedCategoryId,
+        });
+        await api.streams.update(stream.id, { max_pilots_display: maxDisplay });
+        navigate(`/stream/${stream.id}`);
+      } else {
+        // Crear stream y agregar pilotos manualmente
+        const stream = await api.streams.create({ youtube_url: youtubeUrl, title: title || undefined });
+        for (const p of pilots) {
+          if (p.car_number.trim()) {
+            await api.pilots.add(stream.id, { car_number: p.car_number, driver_name: p.driver_name || undefined, color: p.color });
+          }
         }
+        await api.streams.update(stream.id, { max_pilots_display: maxDisplay });
+        navigate(`/stream/${stream.id}`);
       }
-      await api.streams.update(stream.id, { max_pilots_display: maxDisplay });
-      navigate(`/stream/${stream.id}`);
     } catch (err) {
       console.error(err);
     } finally {
@@ -80,7 +99,7 @@ export function StreamSetup() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Título (opcional)</label>
+            <label className="block text-sm font-medium mb-2">Titulo (opcional)</label>
             <input
               type="text"
               value={title}
@@ -91,7 +110,7 @@ export function StreamSetup() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Máximo de pilotos en overlay</label>
+            <label className="block text-sm font-medium mb-2">Maximo de pilotos en overlay</label>
             <input
               type="number"
               min={1}
@@ -103,48 +122,80 @@ export function StreamSetup() {
           </div>
 
           <div>
-            <div className="flex items-center justify-between mb-3">
-              <label className="text-sm font-medium">Pilotos</label>
-              <button type="button" onClick={addPilot} className="flex items-center gap-1 text-orange-500 hover:text-orange-400 text-sm transition-colors">
-                <Plus size={14} />
-                Agregar piloto
-              </button>
-            </div>
-
-            {pilots.length === 0 && (
-              <p className="text-sm text-muted-foreground">No hay pilotos agregados. Puedes agregarlos ahora o después.</p>
+            <label className="block text-sm font-medium mb-2">
+              <Folder size={14} className="inline mr-1" />
+              Categoria de pilotos (opcional)
+            </label>
+            {categories.length > 0 ? (
+              <select
+                value={selectedCategoryId || ''}
+                onChange={e => {
+                  const val = e.target.value;
+                  setSelectedCategoryId(val ? parseInt(val) : null);
+                  if (val) setPilots([]);
+                }}
+                className="w-full bg-secondary border border-border rounded-lg px-4 py-2.5 text-foreground focus:outline-none focus:border-beto-red transition-colors"
+              >
+                <option value="">Sin categoria - agregar manualmente</option>
+                {categories.map(cat => (
+                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
+              </select>
+            ) : (
+              <div className="bg-secondary border border-border rounded-lg p-4 text-center">
+                <p className="text-sm text-muted-foreground mb-2">No hay categorias creadas</p>
+                <Link to="/categories" className="text-beto-red hover:text-red-400 text-sm font-medium transition-colors">
+                  Crear categoria
+                </Link>
+              </div>
             )}
-
-            <div className="space-y-2">
-              {pilots.map((pilot, i) => (
-                <div key={i} className="flex items-center gap-2 bg-secondary border border-border rounded-lg p-3">
-                  <input
-                    type="color"
-                    value={pilot.color}
-                    onChange={e => updatePilot(i, 'color', e.target.value)}
-                    className="w-8 h-8 rounded cursor-pointer border-0 bg-transparent"
-                  />
-                  <input
-                    type="text"
-                    value={pilot.car_number}
-                    onChange={e => updatePilot(i, 'car_number', e.target.value)}
-                    placeholder="#"
-                    className="w-16 bg-background border border-border rounded px-2 py-1.5 text-foreground text-center text-sm focus:outline-none focus:border-beto-red"
-                  />
-                  <input
-                    type="text"
-                    value={pilot.driver_name}
-                    onChange={e => updatePilot(i, 'driver_name', e.target.value)}
-                    placeholder="Nombre del piloto"
-                    className="flex-1 bg-background border border-border rounded px-3 py-1.5 text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:border-beto-red"
-                  />
-                  <button type="button" onClick={() => removePilot(i)} className="text-muted-foreground hover:text-red-500 transition-colors">
-                    <X size={16} />
-                  </button>
-                </div>
-              ))}
-            </div>
           </div>
+
+          {!selectedCategoryId && (
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <label className="text-sm font-medium">Pilotos</label>
+                <button type="button" onClick={addPilot} className="flex items-center gap-1 text-orange-500 hover:text-orange-400 text-sm transition-colors">
+                  <Plus size={14} />
+                  Agregar piloto
+                </button>
+              </div>
+
+              {pilots.length === 0 && (
+                <p className="text-sm text-muted-foreground">No hay pilotos agregados. Puedes agregarlos ahora o despues.</p>
+              )}
+
+              <div className="space-y-2">
+                {pilots.map((pilot, i) => (
+                  <div key={i} className="flex items-center gap-2 bg-secondary border border-border rounded-lg p-3">
+                    <input
+                      type="color"
+                      value={pilot.color}
+                      onChange={e => updatePilot(i, 'color', e.target.value)}
+                      className="w-8 h-8 rounded cursor-pointer border-0 bg-transparent"
+                    />
+                    <input
+                      type="text"
+                      value={pilot.car_number}
+                      onChange={e => updatePilot(i, 'car_number', e.target.value)}
+                      placeholder="#"
+                      className="w-16 bg-background border border-border rounded px-2 py-1.5 text-foreground text-center text-sm focus:outline-none focus:border-beto-red"
+                    />
+                    <input
+                      type="text"
+                      value={pilot.driver_name}
+                      onChange={e => updatePilot(i, 'driver_name', e.target.value)}
+                      placeholder="Nombre del piloto"
+                      className="flex-1 bg-background border border-border rounded px-3 py-1.5 text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:border-beto-red"
+                    />
+                    <button type="button" onClick={() => removePilot(i)} className="text-muted-foreground hover:text-red-500 transition-colors">
+                      <X size={16} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <button
             type="submit"

@@ -3,6 +3,7 @@ import { queryOne } from '../db/helpers.js';
 import { getIo } from '../websocket/index.js';
 import * as voteService from '../services/vote.service.js';
 import * as predictionService from '../services/prediction.service.js';
+import * as categoryService from '../services/category.service.js';
 import { isStreamLive } from '../services/youtube-chat.service.js';
 
 export const streamsRouter = Router();
@@ -37,10 +38,19 @@ streamsRouter.get('/:id', (req, res) => {
 });
 
 streamsRouter.post('/', (req, res) => {
-  const { youtube_url, title } = req.body;
+  const { youtube_url, title, category_id } = req.body;
   if (!youtube_url) return res.status(400).json({ error: 'youtube_url es requerido' });
 
   const stream = voteService.createStream(youtube_url, title);
+
+  // Si se proporciona un category_id, cargar los pilotos de esa categoria
+  if (category_id) {
+    const categoryPilots = categoryService.listCategoryPilots(category_id);
+    for (const pilot of categoryPilots) {
+      voteService.addPilot(stream.id, pilot.car_number, pilot.driver_name || undefined, pilot.color);
+    }
+  }
+
   res.status(201).json(stream);
 });
 

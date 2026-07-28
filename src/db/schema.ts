@@ -51,4 +51,21 @@ export const SCHEMA = `
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(stream_id, user_id)
   );
+
+  CREATE TABLE IF NOT EXISTS categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE,
+    description TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE TABLE IF NOT EXISTS category_pilots (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category_id INTEGER NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
+    car_number TEXT NOT NULL,
+    driver_name TEXT,
+    color TEXT DEFAULT '#3b82f6',
+    UNIQUE(category_id, car_number)
+  );
 `;
