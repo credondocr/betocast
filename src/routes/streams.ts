@@ -1,7 +1,14 @@
 import { Router } from 'express';
+import { queryOne } from '../db/helpers.js';
 import * as voteService from '../services/vote.service.js';
 
 export const streamsRouter = Router();
+
+streamsRouter.get('/live', (req, res) => {
+  const stream = queryOne('SELECT * FROM streams WHERE status = ? ORDER BY created_at DESC LIMIT 1', ['active']);
+  if (!stream) return res.status(404).json({ error: 'No hay stream activo' });
+  res.json(stream);
+});
 
 streamsRouter.get('/', (req, res) => {
   const streams = voteService.listStreams();

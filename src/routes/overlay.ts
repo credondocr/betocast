@@ -3,6 +3,23 @@ import { queryOne } from '../db/helpers.js';
 
 export const overlayRouter = Router();
 
+overlayRouter.get('/live', (req, res) => {
+  const stream = queryOne('SELECT * FROM streams WHERE status = ? ORDER BY created_at DESC LIMIT 1', ['active']) as any;
+  if (!stream) return res.status(404).send('No hay stream activo');
+
+  const params = req.query;
+  const barHeight = parseInt(params.barHeight as string) || 38;
+  const showNames = params.showNames !== 'false';
+  const showTotal = params.showTotal !== 'false';
+  const showHeader = params.showHeader !== 'false';
+  const fontSize = parseInt(params.fontSize as string) || 20;
+  const maxDisplay = parseInt(params.max as string) || stream.max_pilots_display || 10;
+  const chromaKey = params.chromaKey === 'true';
+  const bgColor = chromaKey ? '#00FF00' : 'transparent';
+
+  res.send(getOverlayHtml(stream, { barHeight, showNames, showTotal, showHeader, fontSize, maxDisplay, chromaKey, bgColor }));
+});
+
 overlayRouter.get('/:id', (req, res) => {
   const stream = queryOne('SELECT * FROM streams WHERE id = ?', [req.params.id]) as any;
   if (!stream) return res.status(404).send('Stream no encontrado');
