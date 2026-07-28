@@ -51,7 +51,7 @@ export function StreamLive() {
     return () => clearInterval(interval);
   }, [autoSync, id]);
 
-  const overlayUrl = `${window.location.origin}/overlay/${id}${chromaKey ? '?chromaKey=true' : ''}`;
+  const overlayUrl = `${window.location.origin}/overlay/live${chromaKey ? '?chromaKey=true' : ''}`;
 
   const copyOverlayUrl = () => {
     navigator.clipboard.writeText(overlayUrl);

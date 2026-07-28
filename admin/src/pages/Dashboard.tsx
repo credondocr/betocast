@@ -71,7 +71,7 @@ export function Dashboard() {
                     Ver en vivo
                   </Link>
                   <a
-                    href={`/overlay/${stream.id}`}
+                    href={`/overlay/live`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 border border-border hover:border-beto-red/40 text-foreground font-medium py-2 px-3 rounded-lg transition-colors text-sm"
