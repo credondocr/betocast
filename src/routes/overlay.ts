@@ -107,8 +107,7 @@ function getOverlayHtml(stream: any, opts: {
       font-style: italic;
       letter-spacing: 2px;
       color: #ffffff;
-      -webkit-text-stroke: 1px rgba(0,0,0,0.3);
-      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.5);
     }
     .logo-bar .brand .red { color: #CC2020; }
     .logo-bar .subtitle {
@@ -118,7 +117,6 @@ function getOverlayHtml(stream: any, opts: {
       letter-spacing: 4px;
       text-transform: uppercase;
       margin-top: 2px;
-      -webkit-text-stroke: 0.5px rgba(0,0,0,0.3);
     }
 
     /* ── Chart ── */
@@ -136,9 +134,9 @@ function getOverlayHtml(stream: any, opts: {
       width: 32px;
       font-size: 20px;
       font-weight: 900;
-      color: rgba(255,255,255,0.7);
+      color: rgba(255,255,255,0.8);
       text-align: center;
-      -webkit-text-stroke: 0.5px rgba(0,0,0,0.4);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.7), 1px -1px 0 rgba(0,0,0,0.7), -1px 1px 0 rgba(0,0,0,0.7), 1px 1px 0 rgba(0,0,0,0.7);
     }
     .bar-rank.top-1 { color: #fbbf24; }
     .bar-rank.top-2 { color: #9ca3af; }
@@ -149,8 +147,7 @@ function getOverlayHtml(stream: any, opts: {
       font-weight: 900;
       text-align: right;
       font-variant-numeric: tabular-nums;
-      -webkit-text-stroke: 1px rgba(0,0,0,0.4);
-      text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8), 0 2px 6px rgba(0,0,0,0.6);
     }
     .bar-track {
       flex: 1;
@@ -183,19 +180,18 @@ function getOverlayHtml(stream: any, opts: {
       font-size: 20px;
       font-weight: 900;
       color: #ffffff;
-      -webkit-text-stroke: 1px rgba(0,0,0,0.5);
-      text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.9), 1px -1px 0 rgba(0,0,0,0.9), -1px 1px 0 rgba(0,0,0,0.9), 1px 1px 0 rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.7);
       position: relative;
       z-index: 1;
       font-variant-numeric: tabular-nums;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
     }
     .bar-info { display: flex; flex-direction: column; width: 120px; gap: 2px; text-align: right; }
     .bar-driver {
       font-size: 20px;
       font-weight: 800;
       color: #ffffff;
-      -webkit-text-stroke: 0.5px rgba(0,0,0,0.4);
-      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -204,8 +200,8 @@ function getOverlayHtml(stream: any, opts: {
       font-size: 18px;
       font-weight: 800;
       color: rgba(255,255,255,0.9);
-      -webkit-text-stroke: 0.5px rgba(0,0,0,0.3);
       font-variant-numeric: tabular-nums;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
     }
 
     /* ── Footer ── */
@@ -218,20 +214,22 @@ function getOverlayHtml(stream: any, opts: {
       padding-top: 16px;
       border-top: 2px solid rgba(255,255,255,0.2);
       font-size: 22px;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8);
       font-weight: 800;
       color: #ffffff;
-      -webkit-text-stroke: 0.5px rgba(0,0,0,0.3);
-      text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.7), 1px -1px 0 rgba(0,0,0,0.7), -1px 1px 0 rgba(0,0,0,0.7), 1px 1px 0 rgba(0,0,0,0.7), 0 2px 6px rgba(0,0,0,0.5);
       animation: fadeIn 0.8s ease-out;
       width: 100%;
     }
     .footer .stat { display: flex; align-items: center; gap: 6px; }
-    .footer .stat strong { color: #ffffff; font-weight: 900; font-size: 24px; -webkit-text-stroke: 1px rgba(0,0,0,0.3); }
+    .footer .stat strong { color: #ffffff; font-weight: 900; font-size: 24px;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8); }
 
     /* ── Empty state ── */
     .empty { text-align: center; padding: 50px 30px; color: rgba(255,255,255,0.4); }
     .empty .icon { font-size: 40px; margin-bottom: 12px; }
-    .empty p { font-size: 18px; font-weight: 700; -webkit-text-stroke: 0.5px rgba(0,0,0,0.3); }
+    .empty p { font-size: 18px; font-weight: 700;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6); }
 
     /* ── Vote hint ── */
     .vote-hint {
@@ -244,15 +242,15 @@ function getOverlayHtml(stream: any, opts: {
       font-size: 18px;
       font-weight: 700;
       color: #ffffff;
-      -webkit-text-stroke: 0.5px rgba(0,0,0,0.3);
       line-height: 1.5;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
       display: inline-block;
     }
     .vote-hint strong {
       color: #CC2020;
       font-weight: 900;
       font-size: 22px;
-      -webkit-text-stroke: 1px rgba(0,0,0,0.4);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8);
     }
     .vote-hint-icon {
       margin-right: 4px;
@@ -498,6 +496,7 @@ function getPredictOverlayHtml(stream: any, opts: {
     }
     .header .title {
       font-size: 24px;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8);
       font-weight: 900;
       font-style: italic;
       letter-spacing: 1px;
@@ -563,19 +562,18 @@ function getPredictOverlayHtml(stream: any, opts: {
       font-size: 20px;
       font-weight: 900;
       color: #ffffff;
-      -webkit-text-stroke: 1px rgba(0,0,0,0.5);
-      text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.9), 1px -1px 0 rgba(0,0,0,0.9), -1px 1px 0 rgba(0,0,0,0.9), 1px 1px 0 rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.7);
       position: relative;
       z-index: 1;
       font-variant-numeric: tabular-nums;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
     }
     .bar-info { display: flex; flex-direction: column; width: 200px; gap: 2px; }
     .bar-driver {
       font-size: 20px;
       font-weight: 800;
       color: #ffffff;
-      -webkit-text-stroke: 0.5px rgba(0,0,0,0.4);
-      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -585,6 +583,7 @@ function getPredictOverlayHtml(stream: any, opts: {
       font-weight: 800;
       color: rgba(255,255,255,0.85);
       font-variant-numeric: tabular-nums;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
     }
 
     /* ── Footer ── */
@@ -597,15 +596,16 @@ function getPredictOverlayHtml(stream: any, opts: {
       padding-top: 16px;
       border-top: 2px solid rgba(255,255,255,0.2);
       font-size: 22px;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8);
       font-weight: 800;
       color: #ffffff;
-      -webkit-text-stroke: 0.5px rgba(0,0,0,0.3);
-      text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.7), 1px -1px 0 rgba(0,0,0,0.7), -1px 1px 0 rgba(0,0,0,0.7), 1px 1px 0 rgba(0,0,0,0.7), 0 2px 6px rgba(0,0,0,0.5);
       animation: fadeIn 0.8s ease-out;
       width: 100%;
     }
     .footer .stat { display: flex; align-items: center; gap: 6px; }
-    .footer .stat strong { color: #ffffff; font-weight: 900; font-size: 24px; -webkit-text-stroke: 1px rgba(0,0,0,0.3); }
+    .footer .stat strong { color: #ffffff; font-weight: 900; font-size: 24px;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8); }
 
     /* ── Winners ── */
     .winners {
@@ -620,6 +620,7 @@ function getPredictOverlayHtml(stream: any, opts: {
     .winners .trophy { font-size: 48px; margin-bottom: 8px; }
     .winners .title {
       font-size: 22px;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8);
       font-weight: 900;
       color: #a855f7;
       margin-bottom: 12px;
@@ -643,7 +644,8 @@ function getPredictOverlayHtml(stream: any, opts: {
     /* ── Empty state ── */
     .empty { text-align: center; padding: 50px 30px; color: rgba(255,255,255,0.4); }
     .empty .icon { font-size: 40px; margin-bottom: 12px; }
-    .empty p { font-size: 18px; font-weight: 700; -webkit-text-stroke: 0.5px rgba(0,0,0,0.3); }
+    .empty p { font-size: 18px; font-weight: 700;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6); }
 
     /* ── Hint ── */
     .hint {
