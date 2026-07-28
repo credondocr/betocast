@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { config } from '../config.js';
 import * as voteService from '../services/vote.service.js';
-import { parseVote } from '../services/chat-parser.js';
+import * as predictionService from '../services/prediction.service.js';
+import { parseVote, parsePrediction } from '../services/chat-parser.js';
 import { MockChatService } from '../services/mock-chat.service.js';
 import { getLiveChatId, getChatMessages } from '../services/youtube-chat.service.js';
 import { getIo } from '../websocket/index.js';
@@ -67,6 +68,7 @@ async function syncYouTubeChat(streamId: string, videoId: string) {
   const { messages, nextPageToken, pollingInterval } = await getChatMessages(liveChatId, pageToken);
 
   let newVotes = 0;
+  let newPredictions = 0;
   let processed = 0;
 
   for (const msg of messages) {
@@ -75,6 +77,7 @@ async function syncYouTubeChat(streamId: string, videoId: string) {
     if (existing) {
       // Log the message
       const isVote = parseVote(msg.message);
+      const isPrediction = parsePrediction(msg.message);
       voteService.logChatMessage(
         streamId, msg.messageId, msg.userId, msg.userName, msg.message, !!isVote, isVote
       );
@@ -96,7 +99,21 @@ async function syncYouTubeChat(streamId: string, videoId: string) {
             carNumber: isVote,
           });
         }
-      } else {
+      }
+
+      if (isPrediction) {
+        const result = predictionService.registerPrediction(streamId, msg.userId, msg.userName, isPrediction);
+        if (result.success) {
+          newPredictions++;
+          const io = getIo();
+          const predResults = predictionService.getPredictionResults(streamId);
+          const predStats = predictionService.getPredictionStats(streamId);
+          io.to(`stream:${streamId}`).emit('prediction-update', { streamId, results: predResults });
+          io.to(`stream:${streamId}`).emit('prediction-stats-update', { streamId, stats: predStats });
+        }
+      }
+
+      if (!isVote) {
         const io = getIo();
         io.to(`stream:${streamId}`).emit('chat-message', {
           streamId,
@@ -119,8 +136,9 @@ async function syncYouTubeChat(streamId: string, videoId: string) {
 
   return {
     success: true,
-    message: `Procesados ${processed} mensajes, ${newVotes} votos nuevos`,
+    message: `Procesados ${processed} mensajes, ${newVotes} votos nuevos, ${newPredictions} predicciones nuevas`,
     newVotes,
+    newPredictions,
     totalMessages: messages.length,
     total: voteService.getVoteStats(streamId),
     pollingInterval,
@@ -140,6 +158,7 @@ syncRouter.post('/:id/mock/start', (req, res) => {
 
   mock.on('message', (msg) => {
     const isVote = parseVote(msg.message);
+    const isPrediction = parsePrediction(msg.message);
     voteService.logChatMessage(
       req.params.id, msg.id, msg.userId, msg.userName, msg.message, !!isVote, isVote
     );
@@ -160,7 +179,20 @@ syncRouter.post('/:id/mock/start', (req, res) => {
           carNumber: isVote,
         });
       }
-    } else {
+    }
+
+    if (isPrediction) {
+      const result = predictionService.registerPrediction(req.params.id, msg.userId, msg.userName, isPrediction);
+      if (result.success) {
+        const io = getIo();
+        const predResults = predictionService.getPredictionResults(req.params.id);
+        const predStats = predictionService.getPredictionStats(req.params.id);
+        io.to(`stream:${req.params.id}`).emit('prediction-update', { streamId: req.params.id, results: predResults });
+        io.to(`stream:${req.params.id}`).emit('prediction-stats-update', { streamId: req.params.id, stats: predStats });
+      }
+    }
+
+    if (!isVote) {
       const io = getIo();
       io.to(`stream:${req.params.id}`).emit('chat-message', {
         streamId: req.params.id,

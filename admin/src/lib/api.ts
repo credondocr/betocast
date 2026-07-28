@@ -33,6 +33,14 @@ export const api = {
   votes: {
     get: (streamId: string) => request<VoteResponse>(`/streams/${streamId}/votes`),
   },
+  predictions: {
+    get: (streamId: string) => request<PredictionResponse>(`/streams/${streamId}/predictions`),
+    resolve: (streamId: string, carNumber: string) =>
+      request<PredictionResolveResponse>(`/streams/${streamId}/predictions/resolve`, {
+        method: 'POST',
+        body: JSON.stringify({ car_number: carNumber }),
+      }),
+  },
   sync: {
     pull: (streamId: string) => request<any>(`/streams/${streamId}/sync`),
   },
@@ -44,4 +52,4 @@ export const api = {
   },
 };
 
-import type { Stream, Pilot, VoteResponse } from '@/types';
+import type { Stream, Pilot, VoteResponse, PredictionResponse, PredictionResolveResponse } from '@/types';

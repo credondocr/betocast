@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { queryOne } from '../db/helpers.js';
+import { getIo } from '../websocket/index.js';
 import * as voteService from '../services/vote.service.js';
+import * as predictionService from '../services/prediction.service.js';
 
 export const streamsRouter = Router();
 
@@ -69,4 +71,26 @@ streamsRouter.get('/:id/votes', (req, res) => {
   const results = voteService.getVoteResults(req.params.id);
   const stats = voteService.getVoteStats(req.params.id);
   res.json({ results, stats });
+});
+
+streamsRouter.get('/:id/predictions', (req, res) => {
+  const results = predictionService.getPredictionResults(req.params.id);
+  const stats = predictionService.getPredictionStats(req.params.id);
+  res.json({ results, stats });
+});
+
+streamsRouter.post('/:id/predictions/resolve', (req, res) => {
+  const { car_number } = req.body;
+  if (!car_number) return res.status(400).json({ error: 'car_number es requerido' });
+
+  const result = predictionService.resolvePredictions(req.params.id, car_number);
+
+  const io = getIo();
+  io.to(`stream:${req.params.id}`).emit('predictions-resolved', {
+    streamId: req.params.id,
+    carNumber: car_number,
+    winners: result.winners,
+  });
+
+  res.json(result);
 });

@@ -42,3 +42,37 @@ export interface ChatMessage {
   isVote: boolean;
   carNumber: string | null;
 }
+
+export interface PredictionUser {
+  user_id: string;
+  user_name: string | null;
+}
+
+export interface PredictionResult {
+  car_number: string;
+  driver_name: string | null;
+  color: string;
+  count: number;
+  users: PredictionUser[];
+}
+
+export interface PredictionStats {
+  totalPredictions: number;
+  totalPredictors: number;
+}
+
+export interface PredictionResponse {
+  results: PredictionResult[];
+  stats: PredictionStats;
+}
+
+export interface PredictionWinner {
+  user_id: string;
+  user_name: string | null;
+}
+
+export interface PredictionResolveResponse {
+  success: boolean;
+  winners: PredictionWinner[];
+  message: string;
+}

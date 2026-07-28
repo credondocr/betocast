@@ -41,4 +41,14 @@ export const SCHEMA = `
     car_number TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
+
+  CREATE TABLE IF NOT EXISTS predictions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    stream_id TEXT NOT NULL REFERENCES streams(id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL,
+    user_name TEXT,
+    car_number TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(stream_id, user_id)
+  );
 `;

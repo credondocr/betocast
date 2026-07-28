@@ -32,12 +32,13 @@ const CAR_NUMBERS = ['01', '03', '05', '07', '08', '11', '14', '17', '22', '25',
 export class MockChatService extends EventEmitter {
   private interval: ReturnType<typeof setInterval> | null = null;
   private messageCounter = 0;
-  private activeUsers: Map<string, { name: string; hasVoted: boolean }> = new Map();
+  private activeUsers: Map<string, { name: string; hasVoted: boolean; hasPredicted: boolean }> = new Map();
 
   constructor(
     private streamId: string,
     private intervalMs: number = 2000,
     private voteProbability: number = 0.6,
+    private predictionProbability: number = 0.3,
   ) {
     super();
   }
@@ -65,7 +66,11 @@ export class MockChatService extends EventEmitter {
 
     let message: string;
 
-    if (!user.hasVoted && Math.random() < this.voteProbability) {
+    if (!user.hasPredicted && Math.random() < this.predictionProbability) {
+      const carNum = CAR_NUMBERS[Math.floor(Math.random() * CAR_NUMBERS.length)];
+      message = `!predict #${carNum}`;
+      user.hasPredicted = true;
+    } else if (!user.hasVoted && Math.random() < this.voteProbability) {
       const carNum = CAR_NUMBERS[Math.floor(Math.random() * CAR_NUMBERS.length)];
       const templates = [
         `¡Vamos #${carNum}!`,
@@ -97,7 +102,7 @@ export class MockChatService extends EventEmitter {
       const available = MOCK_NAMES.filter(n => !this.activeUsers.has(n));
       if (available.length > 0) {
         const name = available[Math.floor(Math.random() * available.length)];
-        this.activeUsers.set(name, { name, hasVoted: false });
+        this.activeUsers.set(name, { name, hasVoted: false, hasPredicted: false });
         return name;
       }
     }

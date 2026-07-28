@@ -5,6 +5,7 @@ import { useSocket } from '@/hooks/useSocket';
 import { VoteBarChart } from '@/components/VoteBarChart';
 import { ChatPreview } from '@/components/ChatPreview';
 import { PilotManager } from '@/components/PilotManager';
+import { PredictionManager } from '@/components/PredictionManager';
 import type { Stream, Pilot } from '@/types';
 import { ArrowLeft, Copy, Play, Square, RefreshCw, Settings, ExternalLink, Check, AlertCircle } from 'lucide-react';
 
@@ -202,6 +203,8 @@ export function StreamLive() {
             </div>
 
             <PilotManager streamId={stream.id} pilots={pilots} onUpdate={() => api.pilots.list(stream.id).then(setPilots)} />
+
+            <PredictionManager streamId={stream.id} />
           </div>
 
           <div>
