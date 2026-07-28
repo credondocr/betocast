@@ -358,6 +358,7 @@ function getUnifiedOverlayHtml(stream: any, opts: {
     <div id="winners-container"></div>
   </div>
 
+  <script src="/socket.io/socket.io.js"></script>
   <script>
     var streamId = '${stream.id}';
     var maxDisplay = ${opts.maxDisplay};
@@ -489,14 +490,20 @@ function getUnifiedOverlayHtml(stream: any, opts: {
         return;
       }
 
+      debug('connecting socket...');
       var socket = io();
       socket.on('connect', function() {
         debug('ws connected');
         socket.emit('join-stream', streamId);
+        debug('joined stream: ' + streamId);
       });
 
       socket.on('overlay-mode-changed', function(data) {
-        if (data.streamId !== streamId) return;
+        debug('mode change event received: ' + JSON.stringify(data));
+        if (data.streamId !== streamId) {
+          debug('streamId mismatch: ' + data.streamId + ' !== ' + streamId);
+          return;
+        }
         mode = data.mode;
         isPredictions = mode === 'predictions';
         colorList = isPredictions ? predictColors : colors;

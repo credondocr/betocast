@@ -56,9 +56,13 @@ export function StreamLive() {
   const overlayUrl = `${window.location.origin}/overlay/live${chromaKey ? '?chromaKey=true' : ''}`;
 
   const handleModeChange = (mode: 'votes' | 'predictions') => {
+    console.log('Mode change requested:', mode);
     setOverlayMode(mode);
     if (id && socket) {
+      console.log('Emitting set-overlay-mode:', { streamId: id, mode });
       socket.emit('set-overlay-mode', { streamId: id, mode });
+    } else {
+      console.log('Missing id or socket:', { id, socket: !!socket });
     }
   };
 
