@@ -58,8 +58,8 @@ function getUnifiedOverlayHtml(stream: any, opts: {
   const emptyIcon = isPredictions ? '🔮' : '🏁';
   const emptyText = isPredictions ? 'Esperando predicciones...' : 'Esperando votos...';
   const hintHtml = isPredictions
-    ? '<div class="hint">Predice con <code>!gana #numero</code></div>'
-    : '<div class="vote-hint"><span class="vote-hint-icon"></span>¿Quieres votar? Escribe en el chat <strong>#</strong> + número de tu piloto</div>';
+    ? '<div class="hint-bar">Predice con <code>!gana #numero</code></div>'
+    : '<div class="hint-bar">¿Quieres votar? Escribe en el chat <strong>#</strong> + número de tu piloto</div>';
   const countLabel = isPredictions ? 'predicciones' : 'votos';
   const footerStatLabel = isPredictions ? 'participantes' : 'votos';
 
@@ -84,12 +84,23 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       justify-content: center;
     }
     .container {
-      padding: 20px 30px;
-      max-width: 900px;
+      padding: 24px 32px;
+      max-width: 920px;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+
+    /* ── Main Panel ── */
+    .panel {
+      background: #0b2467;
+      border-radius: 16px;
+      padding: 28px 36px 24px;
+      width: 100%;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.08);
+      animation: fadeSlideDown 0.6s ease-out;
     }
 
     /* ── Logo ── */
@@ -98,12 +109,11 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       align-items: center;
       justify-content: center;
       gap: 14px;
-      margin-bottom: 16px;
-      animation: fadeSlideDown 0.6s ease-out;
+      margin-bottom: 20px;
     }
     .logo-bar img {
-      height: 64px;
-      width: 64px;
+      height: 56px;
+      width: 56px;
     }
     .logo-bar .brand {
       font-size: 34px;
@@ -111,24 +121,22 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-style: italic;
       letter-spacing: 2px;
       color: #ffffff;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.5);
     }
     .logo-bar .brand .red { color: #CC2020; }
     .logo-bar .brand .highlight { color: #a855f7; }
     .logo-bar .subtitle {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
-      color: rgba(255,255,255,0.85);
+      color: rgba(255,255,255,0.7);
       letter-spacing: 4px;
       text-transform: uppercase;
       margin-top: 2px;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
     }
 
-    /* ── Chart ── */
+    /* ── Chart ─ */
     .chart { display: flex; flex-direction: column; gap: 10px; width: 100%; }
 
-    /* ── Bar Row ─ */
+    /* ─ Bar Row ─ */
     .bar-row {
       display: flex;
       align-items: center;
@@ -140,32 +148,27 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       width: 32px;
       font-size: 18px;
       font-weight: 900;
-      color: #ffffff;
+      color: rgba(255,255,255,0.7);
       text-align: center;
-      background: rgba(11, 36, 103, 0.85);
-      border-radius: 6px;
-      padding: 4px 0;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5);
     }
-    .bar-rank.top-1 { background: rgba(251, 191, 36, 0.9); color: #000; }
-    .bar-rank.top-2 { background: rgba(156, 163, 175, 0.9); color: #000; }
-    .bar-rank.top-3 { background: rgba(217, 119, 6, 0.9); color: #000; }
+    .bar-rank.top-1 { color: #fbbf24; }
+    .bar-rank.top-2 { color: #9ca3af; }
+    .bar-rank.top-3 { color: #d97706; }
     .bar-number {
       width: 56px;
       font-size: ${opts.fontSize + 4}px;
       font-weight: 900;
       text-align: right;
       font-variant-numeric: tabular-nums;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8), 0 2px 6px rgba(0,0,0,0.6);
     }
     .bar-track {
       flex: 1;
       height: ${opts.barHeight}px;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.3);
       border-radius: 8px;
       overflow: hidden;
       position: relative;
-      border: 2px solid rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.08);
     }
     .bar-fill {
       height: 100%;
@@ -189,7 +192,6 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-size: 20px;
       font-weight: 900;
       color: #ffffff;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.9), 1px -1px 0 rgba(0,0,0,0.9), -1px 1px 0 rgba(0,0,0,0.9), 1px 1px 0 rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.7);
       position: relative;
       z-index: 1;
       font-variant-numeric: tabular-nums;
@@ -199,7 +201,6 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-size: 20px;
       font-weight: 800;
       color: #ffffff;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -207,15 +208,36 @@ function getUnifiedOverlayHtml(stream: any, opts: {
     .bar-count {
       font-size: 16px;
       font-weight: 700;
-      color: #ffffff;
-      background: rgba(11, 36, 103, 0.85);
-      padding: 2px 8px;
-      border-radius: 4px;
+      color: rgba(255,255,255,0.8);
       font-variant-numeric: tabular-nums;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5);
     }
 
-    /* ── Footer ── */
+    /* ── Hint ── */
+    .hint-bar {
+      text-align: center;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.5;
+    }
+    .hint-bar strong {
+      color: #CC2020;
+      font-weight: 900;
+      font-size: 20px;
+    }
+    .hint-bar code {
+      background: rgba(168,85,247,0.35);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 800;
+      color: #e9d5ff;
+    }
+
+    /* ── Footer ─ */
     .footer {
       display: flex;
       align-items: center;
@@ -223,114 +245,53 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       gap: 16px;
       margin-top: 20px;
       padding-top: 16px;
-      border-top: 2px solid rgba(255,255,255,0.2);
-      font-size: 20px;
-      font-weight: 800;
-      color: #ffffff;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 18px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.75);
       animation: fadeIn 0.8s ease-out;
       width: 100%;
     }
-    .footer .stat {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(11, 36, 103, 0.85);
-      padding: 6px 14px;
-      border-radius: 8px;
-    }
+    .footer .stat { display: flex; align-items: center; gap: 6px; }
     .footer .stat strong { color: #ffffff; font-weight: 900; font-size: 22px; }
 
     /* ── Empty state ── */
-    .empty { text-align: center; padding: 50px 30px; color: rgba(255,255,255,0.4); }
+    .empty { text-align: center; padding: 40px 30px; color: rgba(255,255,255,0.35); }
     .empty .icon { font-size: 40px; margin-bottom: 12px; }
-    .empty p { font-size: 18px; font-weight: 700;
-      background: rgba(11, 36, 103, 0.7);
-      padding: 6px 16px;
-      border-radius: 8px;
-      display: inline-block;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5); }
-
-    /* ── Vote hint ── */
-    .vote-hint {
-      text-align: center;
-      margin-top: 16px;
-      padding: 10px 20px;
-      background: rgba(11,36,103,0.9);
-      border: 2px solid rgba(26,58,138,0.8);
-      border-radius: 10px;
-      font-size: 18px;
-      font-weight: 700;
-      color: #ffffff;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5);
-      line-height: 1.5;
-      display: inline-block;
-    }
-    .vote-hint strong {
-      color: #CC2020;
-      font-weight: 900;
-      font-size: 22px;
-    }
-    .vote-hint-icon {
-      margin-right: 4px;
-      font-size: 14px;
-    }
-
-    /* ─ Prediction hint ── */
-    .hint {
-      text-align: center;
-      margin-top: 16px;
-      padding: 10px 20px;
-      background: rgba(76,29,149,0.9);
-      border: 2px solid rgba(109,40,217,0.8);
-      border-radius: 10px;
-      font-size: 18px;
-      font-weight: 700;
-      color: #ffffff;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5);
-      line-height: 1.5;
-      display: inline-block;
-    }
-    .hint code {
-      background: rgba(168,85,247,0.4);
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-weight: 800;
-    }
+    .empty p { font-size: 18px; font-weight: 700; }
 
     /* ── Winners ── */
     .winners {
       text-align: center;
-      padding: 24px;
+      padding: 20px;
       margin-top: 20px;
-      background: linear-gradient(135deg, rgba(168,85,247,0.25) 0%, rgba(236,72,153,0.25) 100%);
-      border: 2px solid rgba(168,85,247,0.5);
-      border-radius: 14px;
+      background: rgba(168,85,247,0.15);
+      border: 1px solid rgba(168,85,247,0.3);
+      border-radius: 12px;
       animation: fadeIn 0.6s ease-out;
       width: 100%;
     }
-    .winners .trophy { font-size: 56px; margin-bottom: 10px; }
+    .winners .trophy { font-size: 48px; margin-bottom: 8px; }
     .winners .title {
-      font-size: 26px;
+      font-size: 22px;
       font-weight: 900;
-      color: #a855f7;
-      margin-bottom: 16px;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8);
+      color: #c084fc;
+      margin-bottom: 14px;
     }
     .winners .list {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
     }
     .winners .winner {
-      background: rgba(11, 36, 103, 0.85);
-      border: 1px solid rgba(168,85,247,0.6);
-      padding: 8px 16px;
-      border-radius: 24px;
-      font-size: 16px;
+      background: rgba(168,85,247,0.25);
+      border: 1px solid rgba(168,85,247,0.4);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 15px;
       font-weight: 700;
       color: white;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5);
     }
 
     /* ─ Animations ── */
@@ -352,24 +313,26 @@ function getUnifiedOverlayHtml(stream: any, opts: {
 <body>
   <div id="debug"></div>
   <div class="container">
-    <div class="logo-bar">
-      <img src="/logo.svg" alt="Beto Casting" />
-      <div>
-        <div class="brand">${headerTitle}</div>
-        <div class="subtitle">${headerSubtitle}</div>
+    <div class="panel">
+      <div class="logo-bar">
+        <img src="/logo.svg" alt="Beto Casting" />
+        <div>
+          <div class="brand">${headerTitle}</div>
+          <div class="subtitle">${headerSubtitle}</div>
+        </div>
       </div>
-    </div>
 
-    <div class="chart" id="chart">
-      <div class="empty"><div class="icon">${emptyIcon}</div><p>${emptyText}</p></div>
-    </div>
+      <div class="chart" id="chart">
+        <div class="empty"><div class="icon">${emptyIcon}</div><p>${emptyText}</p></div>
+      </div>
 
-    <div style="text-align:center">
-      ${hintHtml}
-    </div>
+      <div style="text-align:center">
+        ${hintHtml}
+      </div>
 
-    ${opts.showTotal ? '<div class="footer" id="footer"></div>' : ''}
-    <div id="winners-container"></div>
+      ${opts.showTotal ? '<div class="footer" id="footer"></div>' : ''}
+      <div id="winners-container"></div>
+    </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
@@ -429,7 +392,7 @@ function getUnifiedOverlayHtml(stream: any, opts: {
         var displayName = item.driver_name ? item.driver_name : '';
         var rightSide = showNames
           ? '<div class="bar-info"><div class="bar-driver">' + displayName + '</div><div class="bar-count">' + item.count + ' ' + countLabel + '</div></div>'
-          : '<div class="bar-count" style="width:auto;min-width:60px;text-align:center">' + item.count + '</div>';
+          : '<div class="bar-count" style="width:60px;text-align:center">' + item.count + '</div>';
 
         html += '<div class="bar-row' + (isFlash ? ' flash' : '') + '">' +
           '<div class="bar-rank ' + rankClass + '">' + (i + 1) + '</div>' +
