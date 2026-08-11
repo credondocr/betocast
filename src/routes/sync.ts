@@ -16,6 +16,7 @@ const youtubeTokens = new Map<string, string | undefined>();
 
 const liveChatIdCache = new Map<string, { id: string; expiresAt: number }>();
 const LIVE_CHAT_ID_TTL_MS = 60_000;
+const MAX_CACHE_SIZE = 100;
 
 function getCachedLiveChatId(videoId: string): string | null | undefined {
   const cached = liveChatIdCache.get(videoId);
@@ -28,6 +29,17 @@ async function getLiveChatIdCached(videoId: string): Promise<string | null> {
   if (cached !== undefined) return cached;
 
   const id = await getLiveChatId(videoId);
+  
+  // Limpiar caché si crece demasiado
+  if (liveChatIdCache.size >= MAX_CACHE_SIZE) {
+    const now = Date.now();
+    for (const [key, value] of liveChatIdCache.entries()) {
+      if (value.expiresAt < now) {
+        liveChatIdCache.delete(key);
+      }
+    }
+  }
+  
   liveChatIdCache.set(videoId, {
     id: id ?? '',
     expiresAt: Date.now() + LIVE_CHAT_ID_TTL_MS,
@@ -44,6 +56,8 @@ export function cleanupStreamState(streamId: string): void {
     mock.removeAllListeners();
     mockServices.delete(streamId);
   }
+  
+  logger.info('Stream state cleaned up', { streamId });
 }
 
 syncRouter.get('/:id/sync', async (req, res) => {
@@ -104,64 +118,70 @@ async function syncYouTubeChat(streamId: string, videoId: string) {
 
   logger.debug('Mensajes obtenidos', { streamId, count: messages.length, hasToken: !!nextPageToken });
 
+  // Validar stream una sola vez fuera del loop
+  const stream = voteService.getStream(streamId);
+  if (!stream) {
+    return {
+      success: false,
+      message: 'Stream no encontrado',
+      newVotes: 0,
+      total: { totalVotes: 0, totalVoters: 0 },
+    };
+  }
+
   let newVotes = 0;
   let newPredictions = 0;
   let processed = 0;
 
   for (const msg of messages) {
-    // Skip already processed messages
-    const existing = voteService.getStream(streamId);
-    if (existing) {
-      // Log the message
-      const isVote = parseVote(msg.message);
-      const isPrediction = parsePrediction(msg.message);
-      voteService.logChatMessage(
-        streamId, msg.messageId, msg.userId, msg.userName, msg.message, !!isVote, isVote
-      );
+    const isVote = parseVote(msg.message);
+    const isPrediction = parsePrediction(msg.message);
+    voteService.logChatMessage(
+      streamId, msg.messageId, msg.userId, msg.userName, msg.message, !!isVote, isVote
+    );
 
-      if (isVote) {
-        const result = voteService.registerVote(streamId, msg.userId, msg.userName, isVote);
-        if (result.success) {
-          newVotes++;
-          const io = getIo();
-          const results = voteService.getVoteResults(streamId);
-          const stats = voteService.getVoteStats(streamId);
-          io.to(`stream:${streamId}`).emit('vote-update', { streamId, results });
-          io.to(`stream:${streamId}`).emit('stats-update', { streamId, stats });
-          io.to(`stream:${streamId}`).emit('chat-message', {
-            streamId,
-            userName: msg.userName,
-            message: msg.message,
-            isVote: true,
-            carNumber: isVote,
-          });
-        }
-      }
-
-      if (isPrediction) {
-        const result = predictionService.registerPrediction(streamId, msg.userId, msg.userName, isPrediction);
-        if (result.success) {
-          newPredictions++;
-          const io = getIo();
-          const predResults = predictionService.getPredictionResults(streamId);
-          const predStats = predictionService.getPredictionStats(streamId);
-          io.to(`stream:${streamId}`).emit('prediction-update', { streamId, results: predResults });
-          io.to(`stream:${streamId}`).emit('prediction-stats-update', { streamId, stats: predStats });
-        }
-      }
-
-      if (!isVote) {
+    if (isVote) {
+      const result = voteService.registerVote(streamId, msg.userId, msg.userName, isVote);
+      if (result.success) {
+        newVotes++;
         const io = getIo();
+        const results = voteService.getVoteResults(streamId);
+        const stats = voteService.getVoteStats(streamId);
+        io.to(`stream:${streamId}`).emit('vote-update', { streamId, results });
+        io.to(`stream:${streamId}`).emit('stats-update', { streamId, stats });
         io.to(`stream:${streamId}`).emit('chat-message', {
           streamId,
           userName: msg.userName,
           message: msg.message,
-          isVote: false,
-          carNumber: null,
+          isVote: true,
+          carNumber: isVote,
         });
       }
-      processed++;
     }
+
+    if (isPrediction) {
+      const result = predictionService.registerPrediction(streamId, msg.userId, msg.userName, isPrediction);
+      if (result.success) {
+        newPredictions++;
+        const io = getIo();
+        const predResults = predictionService.getPredictionResults(streamId);
+        const predStats = predictionService.getPredictionStats(streamId);
+        io.to(`stream:${streamId}`).emit('prediction-update', { streamId, results: predResults });
+        io.to(`stream:${streamId}`).emit('prediction-stats-update', { streamId, stats: predStats });
+      }
+    }
+
+    if (!isVote) {
+      const io = getIo();
+      io.to(`stream:${streamId}`).emit('chat-message', {
+        streamId,
+        userName: msg.userName,
+        message: msg.message,
+        isVote: false,
+        carNumber: null,
+      });
+    }
+    processed++;
   }
 
   // Store the next page token

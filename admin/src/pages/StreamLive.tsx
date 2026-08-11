@@ -38,18 +38,30 @@ export function StreamLive() {
   useEffect(() => {
     if (!autoSync || !id) return;
 
+    let isMounted = true;
+    let intervalId: NodeJS.Timeout | null = null;
+
     const doSync = async () => {
+      if (!isMounted || !id) return;
       try {
         const result = await api.sync.pull(id);
-        if (result.success) {
+        if (isMounted && result.success) {
           setSyncMessage({ type: 'ok', text: result.message || 'Sync OK' });
         }
-      } catch {}
+      } catch (err) {
+        // Ignore errors during auto sync
+      }
     };
 
     doSync();
-    const interval = setInterval(doSync, 5000);
-    return () => clearInterval(interval);
+    intervalId = setInterval(doSync, 5000);
+    
+    return () => {
+      isMounted = false;
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
   }, [autoSync, id]);
 
   const openOverlay = (mode: 'votes' | 'predictions') => {

@@ -65,24 +65,37 @@ export async function getLiveChatId(videoId: string): Promise<string | null> {
   }
 
   const url = `${YOUTUBE_API}/videos?part=liveStreamingDetails&id=${videoId}&key=${config.youtubeApiKey}`;
-  const res = await fetch(url);
+  
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeoutId);
 
-  if (!res.ok) {
-    await handleYouTubeError(res, 'Video');
+    if (!res.ok) {
+      await handleYouTubeError(res, 'Video');
+    }
+
+    const data = await res.json() as any;
+
+    if (data.error) {
+      throw new Error(`YouTube API: ${data.error.message}`);
+    }
+
+    const video = data.items?.[0];
+    if (!video) {
+      throw new Error('Video no encontrado o no es una transmisión en vivo');
+    }
+
+    return video?.liveStreamingDetails?.activeLiveChatId || null;
+  } catch (err: any) {
+    clearTimeout(timeoutId);
+    if (err.name === 'AbortError') {
+      throw new Error('YouTube API timeout (10s)');
+    }
+    throw err;
   }
-
-  const data = await res.json() as any;
-
-  if (data.error) {
-    throw new Error(`YouTube API: ${data.error.message}`);
-  }
-
-  const video = data.items?.[0];
-  if (!video) {
-    throw new Error('Video no encontrado o no es una transmisión en vivo');
-  }
-
-  return video?.liveStreamingDetails?.activeLiveChatId || null;
 }
 
 export async function isStreamLive(videoId: string): Promise<boolean> {
@@ -117,29 +130,41 @@ export async function getChatMessages(
     url += `&pageToken=${pageToken}`;
   }
 
-  const res = await fetch(url);
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15000);
+  
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeoutId);
 
-  if (!res.ok) {
-    await handleYouTubeError(res, 'Chat messages');
+    if (!res.ok) {
+      await handleYouTubeError(res, 'Chat messages');
+    }
+
+    const data = await res.json() as ChatMessagesResponse;
+
+    if (data.error) {
+      throw new Error(`YouTube API: ${data.error.message}`);
+    }
+
+    const messages: YouTubeChatMessage[] = (data.items || []).map(item => ({
+      messageId: item.id,
+      userId: item.authorDetails?.channelId || 'unknown',
+      userName: item.authorDetails?.displayName || 'Anónimo',
+      message: item.snippet?.displayMessage || '',
+      timestamp: item.snippet?.publishedAt || new Date().toISOString(),
+    }));
+
+    return {
+      messages,
+      nextPageToken: data.nextPageToken,
+      pollingInterval: data.pollingIntervalMillis,
+    };
+  } catch (err: any) {
+    clearTimeout(timeoutId);
+    if (err.name === 'AbortError') {
+      throw new Error('YouTube API timeout (15s)');
+    }
+    throw err;
   }
-
-  const data = await res.json() as ChatMessagesResponse;
-
-  if (data.error) {
-    throw new Error(`YouTube API: ${data.error.message}`);
-  }
-
-  const messages: YouTubeChatMessage[] = (data.items || []).map(item => ({
-    messageId: item.id,
-    userId: item.authorDetails?.channelId || 'unknown',
-    userName: item.authorDetails?.displayName || 'Anónimo',
-    message: item.snippet?.displayMessage || '',
-    timestamp: item.snippet?.publishedAt || new Date().toISOString(),
-  }));
-
-  return {
-    messages,
-    nextPageToken: data.nextPageToken,
-    pollingInterval: data.pollingIntervalMillis,
-  };
 }
