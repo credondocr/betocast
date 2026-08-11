@@ -39,7 +39,7 @@ export function StreamLive() {
     if (!autoSync || !id) return;
 
     let isMounted = true;
-    let intervalId: NodeJS.Timeout | null = null;
+    let intervalId: ReturnType<typeof setInterval> | null = null;
 
     const doSync = async () => {
       if (!isMounted || !id) return;
