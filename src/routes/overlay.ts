@@ -97,37 +97,32 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      margin-bottom: 20px;
+      gap: 14px;
+      margin-bottom: 16px;
       animation: fadeSlideDown 0.6s ease-out;
     }
     .logo-bar img {
-      height: 48px;
-      width: 48px;
+      height: 64px;
+      width: 64px;
     }
     .logo-bar .brand {
-      font-size: 28px;
+      font-size: 34px;
       font-weight: 900;
       font-style: italic;
       letter-spacing: 2px;
       color: #ffffff;
-      text-shadow:
-        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
-        -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8),
-        0 2px 8px rgba(0,0,0,0.5);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.5);
     }
     .logo-bar .brand .red { color: #CC2020; }
     .logo-bar .brand .highlight { color: #a855f7; }
     .logo-bar .subtitle {
-      font-size: 14px;
+      font-size: 20px;
       font-weight: 700;
-      color: rgba(255,255,255,0.7);
+      color: rgba(255,255,255,0.85);
       letter-spacing: 4px;
       text-transform: uppercase;
       margin-top: 2px;
-      text-shadow:
-        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
-        -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
     }
 
     /* ── Chart ── */
@@ -143,27 +138,25 @@ function getUnifiedOverlayHtml(stream: any, opts: {
     }
     .bar-rank {
       width: 32px;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 900;
-      color: rgba(255,255,255,0.8);
+      color: #ffffff;
       text-align: center;
-      text-shadow:
-        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
-        -1px -1px 0 rgba(0,0,0,0.7), 1px -1px 0 rgba(0,0,0,0.7), -1px 1px 0 rgba(0,0,0,0.7), 1px 1px 0 rgba(0,0,0,0.7);
+      background: rgba(11, 36, 103, 0.85);
+      border-radius: 6px;
+      padding: 4px 0;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5);
     }
-    .bar-rank.top-1 { color: #fbbf24; }
-    .bar-rank.top-2 { color: #9ca3af; }
-    .bar-rank.top-3 { color: #d97706; }
+    .bar-rank.top-1 { background: rgba(251, 191, 36, 0.9); color: #000; }
+    .bar-rank.top-2 { background: rgba(156, 163, 175, 0.9); color: #000; }
+    .bar-rank.top-3 { background: rgba(217, 119, 6, 0.9); color: #000; }
     .bar-number {
       width: 56px;
       font-size: ${opts.fontSize + 4}px;
       font-weight: 900;
       text-align: right;
       font-variant-numeric: tabular-nums;
-      text-shadow:
-        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
-        -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8),
-        0 2px 6px rgba(0,0,0,0.6);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8), 0 2px 6px rgba(0,0,0,0.6);
     }
     .bar-track {
       flex: 1;
@@ -196,10 +189,7 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-size: 20px;
       font-weight: 900;
       color: #ffffff;
-      text-shadow:
-        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
-        -1px -1px 0 rgba(0,0,0,0.9), 1px -1px 0 rgba(0,0,0,0.9), -1px 1px 0 rgba(0,0,0,0.9), 1px 1px 0 rgba(0,0,0,0.9),
-        0 2px 4px rgba(0,0,0,0.7);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.9), 1px -1px 0 rgba(0,0,0,0.9), -1px 1px 0 rgba(0,0,0,0.9), 1px 1px 0 rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.7);
       position: relative;
       z-index: 1;
       font-variant-numeric: tabular-nums;
@@ -209,22 +199,20 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-size: 20px;
       font-weight: 800;
       color: #ffffff;
-      text-shadow:
-        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
-        -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8),
-        0 2px 4px rgba(0,0,0,0.6);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .bar-count {
-      font-size: 18px;
-      font-weight: 800;
-      color: rgba(255,255,255,0.9);
-      text-shadow:
-        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
-        -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      background: rgba(11, 36, 103, 0.85);
+      padding: 2px 8px;
+      border-radius: 4px;
       font-variant-numeric: tabular-nums;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5);
     }
 
     /* ── Footer ── */
@@ -232,33 +220,35 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 16px;
       margin-top: 20px;
       padding-top: 16px;
       border-top: 2px solid rgba(255,255,255,0.2);
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 800;
       color: #ffffff;
-      text-shadow:
-        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
-        -1px -1px 0 rgba(0,0,0,0.7), 1px -1px 0 rgba(0,0,0,0.7), -1px 1px 0 rgba(0,0,0,0.7), 1px 1px 0 rgba(0,0,0,0.7),
-        0 2px 6px rgba(0,0,0,0.5);
       animation: fadeIn 0.8s ease-out;
       width: 100%;
     }
-    .footer .stat { display: flex; align-items: center; gap: 6px; }
-    .footer .stat strong { color: #ffffff; font-weight: 900; font-size: 24px;
-      text-shadow:
-        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
-        -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8); }
+    .footer .stat {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(11, 36, 103, 0.85);
+      padding: 6px 14px;
+      border-radius: 8px;
+    }
+    .footer .stat strong { color: #ffffff; font-weight: 900; font-size: 22px; }
 
     /* ── Empty state ── */
     .empty { text-align: center; padding: 50px 30px; color: rgba(255,255,255,0.4); }
     .empty .icon { font-size: 40px; margin-bottom: 12px; }
     .empty p { font-size: 18px; font-weight: 700;
-      text-shadow:
-        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
-        -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6); }
+      background: rgba(11, 36, 103, 0.7);
+      padding: 6px 16px;
+      border-radius: 8px;
+      display: inline-block;
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5); }
 
     /* ── Vote hint ── */
     .vote-hint {
@@ -271,9 +261,7 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-size: 18px;
       font-weight: 700;
       color: #ffffff;
-      text-shadow:
-        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
-        -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5);
       line-height: 1.5;
       display: inline-block;
     }
@@ -281,16 +269,13 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       color: #CC2020;
       font-weight: 900;
       font-size: 22px;
-      text-shadow:
-        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
-        -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8);
     }
     .vote-hint-icon {
       margin-right: 4px;
       font-size: 14px;
     }
 
-    /* ── Prediction hint ── */
+    /* ─ Prediction hint ── */
     .hint {
       text-align: center;
       margin-top: 16px;
@@ -301,9 +286,7 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-size: 18px;
       font-weight: 700;
       color: #ffffff;
-      text-shadow:
-        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
-        -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5);
       line-height: 1.5;
       display: inline-block;
     }
@@ -331,9 +314,7 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-weight: 900;
       color: #a855f7;
       margin-bottom: 16px;
-      text-shadow:
-        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
-        -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8);
     }
     .winners .list {
       display: flex;
@@ -342,16 +323,14 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       gap: 10px;
     }
     .winners .winner {
-      background: rgba(168,85,247,0.35);
+      background: rgba(11, 36, 103, 0.85);
       border: 1px solid rgba(168,85,247,0.6);
       padding: 8px 16px;
       border-radius: 24px;
       font-size: 16px;
       font-weight: 700;
       color: white;
-      text-shadow:
-        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
-        -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5);
+      text-shadow: -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5);
     }
 
     /* ─ Animations ── */
@@ -450,7 +429,7 @@ function getUnifiedOverlayHtml(stream: any, opts: {
         var displayName = item.driver_name ? item.driver_name : '';
         var rightSide = showNames
           ? '<div class="bar-info"><div class="bar-driver">' + displayName + '</div><div class="bar-count">' + item.count + ' ' + countLabel + '</div></div>'
-          : '<div class="bar-count" style="width:60px">' + item.count + '</div>';
+          : '<div class="bar-count" style="width:auto;min-width:60px;text-align:center">' + item.count + '</div>';
 
         html += '<div class="bar-row' + (isFlash ? ' flash' : '') + '">' +
           '<div class="bar-rank ' + rankClass + '">' + (i + 1) + '</div>' +
