@@ -111,7 +111,10 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-style: italic;
       letter-spacing: 2px;
       color: #ffffff;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.5);
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+        -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8),
+        0 2px 8px rgba(0,0,0,0.5);
     }
     .logo-bar .brand .red { color: #CC2020; }
     .logo-bar .brand .highlight { color: #a855f7; }
@@ -122,7 +125,9 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       letter-spacing: 4px;
       text-transform: uppercase;
       margin-top: 2px;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+        -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
     }
 
     /* ── Chart ── */
@@ -142,7 +147,9 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-weight: 900;
       color: rgba(255,255,255,0.8);
       text-align: center;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.7), 1px -1px 0 rgba(0,0,0,0.7), -1px 1px 0 rgba(0,0,0,0.7), 1px 1px 0 rgba(0,0,0,0.7);
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+        -1px -1px 0 rgba(0,0,0,0.7), 1px -1px 0 rgba(0,0,0,0.7), -1px 1px 0 rgba(0,0,0,0.7), 1px 1px 0 rgba(0,0,0,0.7);
     }
     .bar-rank.top-1 { color: #fbbf24; }
     .bar-rank.top-2 { color: #9ca3af; }
@@ -153,7 +160,10 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-weight: 900;
       text-align: right;
       font-variant-numeric: tabular-nums;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8), 0 2px 6px rgba(0,0,0,0.6);
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+        -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8),
+        0 2px 6px rgba(0,0,0,0.6);
     }
     .bar-track {
       flex: 1;
@@ -186,7 +196,10 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-size: 20px;
       font-weight: 900;
       color: #ffffff;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.9), 1px -1px 0 rgba(0,0,0,0.9), -1px 1px 0 rgba(0,0,0,0.9), 1px 1px 0 rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.7);
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+        -1px -1px 0 rgba(0,0,0,0.9), 1px -1px 0 rgba(0,0,0,0.9), -1px 1px 0 rgba(0,0,0,0.9), 1px 1px 0 rgba(0,0,0,0.9),
+        0 2px 4px rgba(0,0,0,0.7);
       position: relative;
       z-index: 1;
       font-variant-numeric: tabular-nums;
@@ -196,7 +209,10 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-size: 20px;
       font-weight: 800;
       color: #ffffff;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6);
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+        -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8),
+        0 2px 4px rgba(0,0,0,0.6);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -205,7 +221,9 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-size: 18px;
       font-weight: 800;
       color: rgba(255,255,255,0.9);
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+        -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
       font-variant-numeric: tabular-nums;
     }
 
@@ -221,19 +239,26 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-size: 22px;
       font-weight: 800;
       color: #ffffff;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.7), 1px -1px 0 rgba(0,0,0,0.7), -1px 1px 0 rgba(0,0,0,0.7), 1px 1px 0 rgba(0,0,0,0.7), 0 2px 6px rgba(0,0,0,0.5);
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+        -1px -1px 0 rgba(0,0,0,0.7), 1px -1px 0 rgba(0,0,0,0.7), -1px 1px 0 rgba(0,0,0,0.7), 1px 1px 0 rgba(0,0,0,0.7),
+        0 2px 6px rgba(0,0,0,0.5);
       animation: fadeIn 0.8s ease-out;
       width: 100%;
     }
     .footer .stat { display: flex; align-items: center; gap: 6px; }
     .footer .stat strong { color: #ffffff; font-weight: 900; font-size: 24px;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8); }
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+        -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8); }
 
     /* ── Empty state ── */
     .empty { text-align: center; padding: 50px 30px; color: rgba(255,255,255,0.4); }
     .empty .icon { font-size: 40px; margin-bottom: 12px; }
     .empty p { font-size: 18px; font-weight: 700;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6); }
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+        -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6); }
 
     /* ── Vote hint ── */
     .vote-hint {
@@ -246,7 +271,9 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-size: 18px;
       font-weight: 700;
       color: #ffffff;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+        -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
       line-height: 1.5;
       display: inline-block;
     }
@@ -254,7 +281,9 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       color: #CC2020;
       font-weight: 900;
       font-size: 22px;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8);
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+        -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8);
     }
     .vote-hint-icon {
       margin-right: 4px;
@@ -272,7 +301,9 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-size: 18px;
       font-weight: 700;
       color: #ffffff;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+        -1px -1px 0 rgba(0,0,0,0.6), 1px -1px 0 rgba(0,0,0,0.6), -1px 1px 0 rgba(0,0,0,0.6), 1px 1px 0 rgba(0,0,0,0.6);
       line-height: 1.5;
       display: inline-block;
     }
@@ -300,7 +331,9 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-weight: 900;
       color: #a855f7;
       margin-bottom: 16px;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8);
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+        -1px -1px 0 rgba(0,0,0,0.8), 1px -1px 0 rgba(0,0,0,0.8), -1px 1px 0 rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.8);
     }
     .winners .list {
       display: flex;
@@ -316,7 +349,9 @@ function getUnifiedOverlayHtml(stream: any, opts: {
       font-size: 16px;
       font-weight: 700;
       color: white;
-      text-shadow: -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5);
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+        -1px -1px 0 rgba(0,0,0,0.5), 1px -1px 0 rgba(0,0,0,0.5), -1px 1px 0 rgba(0,0,0,0.5), 1px 1px 0 rgba(0,0,0,0.5);
     }
 
     /* ─ Animations ── */
