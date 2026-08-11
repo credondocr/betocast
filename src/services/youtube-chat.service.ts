@@ -1,6 +1,10 @@
 import { config } from '../config.js';
+import { logger } from '../logger.js';
 
 const YOUTUBE_API = 'https://www.googleapis.com/youtube/v3';
+
+const liveStatusCache = new Map<string, { live: boolean; expiresAt: number }>();
+const LIVE_STATUS_TTL_MS = 30_000;
 
 interface LiveChatMessage {
   id: string;
@@ -34,6 +38,8 @@ async function handleYouTubeError(res: Response, context: string): Promise<never
   const body = await res.json().catch(() => null) as any;
   const msg = body?.error?.message || res.statusText;
   const code = body?.error?.code || res.status;
+
+  logger.error('YouTube API error', { context, status: res.status, code, message: msg });
 
   if (res.status === 403) {
     if (msg.toLowerCase().includes('quota')) {
@@ -80,10 +86,16 @@ export async function getLiveChatId(videoId: string): Promise<string | null> {
 }
 
 export async function isStreamLive(videoId: string): Promise<boolean> {
+  const cached = liveStatusCache.get(videoId);
+  if (cached && cached.expiresAt > Date.now()) return cached.live;
+
   try {
     const liveChatId = await getLiveChatId(videoId);
-    return liveChatId !== null;
+    const live = liveChatId !== null;
+    liveStatusCache.set(videoId, { live, expiresAt: Date.now() + LIVE_STATUS_TTL_MS });
+    return live;
   } catch {
+    liveStatusCache.set(videoId, { live: false, expiresAt: Date.now() + LIVE_STATUS_TTL_MS });
     return false;
   }
 }

@@ -5,6 +5,7 @@ import * as voteService from '../services/vote.service.js';
 import * as predictionService from '../services/prediction.service.js';
 import * as categoryService from '../services/category.service.js';
 import { isStreamLive } from '../services/youtube-chat.service.js';
+import { cleanupStreamState } from './sync.js';
 
 export const streamsRouter = Router();
 
@@ -58,12 +59,20 @@ streamsRouter.put('/:id', (req, res) => {
   const { title, status, max_pilots_display } = req.body;
   const stream = voteService.updateStream(req.params.id, { title, status, max_pilots_display });
   if (!stream) return res.status(404).json({ error: 'Stream no encontrado' });
+
+  if (status === 'closed') {
+    cleanupStreamState(req.params.id);
+  }
+
   res.json(stream);
 });
 
 streamsRouter.delete('/:id', (req, res) => {
   const deleted = voteService.deleteStream(req.params.id);
   if (!deleted) return res.status(404).json({ error: 'Stream no encontrado' });
+
+  cleanupStreamState(req.params.id);
+
   res.json({ success: true });
 });
 

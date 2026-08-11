@@ -6,13 +6,45 @@ import { parseVote, parsePrediction } from '../services/chat-parser.js';
 import { MockChatService } from '../services/mock-chat.service.js';
 import { getLiveChatId, getChatMessages } from '../services/youtube-chat.service.js';
 import { getIo } from '../websocket/index.js';
+import { logger } from '../logger.js';
 
 export const syncRouter = Router();
 
 const mockServices = new Map<string, MockChatService>();
 
-// Track next page tokens for each stream
 const youtubeTokens = new Map<string, string | undefined>();
+
+const liveChatIdCache = new Map<string, { id: string; expiresAt: number }>();
+const LIVE_CHAT_ID_TTL_MS = 60_000;
+
+function getCachedLiveChatId(videoId: string): string | null | undefined {
+  const cached = liveChatIdCache.get(videoId);
+  if (cached && cached.expiresAt > Date.now()) return cached.id;
+  return undefined;
+}
+
+async function getLiveChatIdCached(videoId: string): Promise<string | null> {
+  const cached = getCachedLiveChatId(videoId);
+  if (cached !== undefined) return cached;
+
+  const id = await getLiveChatId(videoId);
+  liveChatIdCache.set(videoId, {
+    id: id ?? '',
+    expiresAt: Date.now() + LIVE_CHAT_ID_TTL_MS,
+  });
+  return id;
+}
+
+export function cleanupStreamState(streamId: string): void {
+  youtubeTokens.delete(streamId);
+
+  const mock = mockServices.get(streamId);
+  if (mock) {
+    mock.stop();
+    mock.removeAllListeners();
+    mockServices.delete(streamId);
+  }
+}
 
 syncRouter.get('/:id/sync', async (req, res) => {
   const stream = voteService.getStream(req.params.id);
@@ -24,7 +56,7 @@ syncRouter.get('/:id/sync', async (req, res) => {
       const result = await syncYouTubeChat(req.params.id, stream.video_id);
       return res.json(result);
     } catch (err: any) {
-      console.error('[Sync] YouTube error:', err.message || err);
+      logger.error('YouTube sync error', { streamId: req.params.id, error: err.message });
       return res.json({
         success: false,
         message: `YouTube sync error: ${err.message || 'Error desconocido'}`,
@@ -54,8 +86,11 @@ syncRouter.get('/:id/sync', async (req, res) => {
 });
 
 async function syncYouTubeChat(streamId: string, videoId: string) {
-  const liveChatId = await getLiveChatId(videoId);
+  logger.debug('Iniciando sync YouTube', { streamId, videoId });
+
+  const liveChatId = await getLiveChatIdCached(videoId);
   if (!liveChatId) {
+    logger.info('Stream sin chat activo', { streamId, videoId });
     return {
       success: false,
       message: 'El stream no tiene chat activo o no es una transmisión en vivo.',
@@ -66,6 +101,8 @@ async function syncYouTubeChat(streamId: string, videoId: string) {
 
   const pageToken = youtubeTokens.get(streamId);
   const { messages, nextPageToken, pollingInterval } = await getChatMessages(liveChatId, pageToken);
+
+  logger.debug('Mensajes obtenidos', { streamId, count: messages.length, hasToken: !!nextPageToken });
 
   let newVotes = 0;
   let newPredictions = 0;
@@ -132,6 +169,10 @@ async function syncYouTubeChat(streamId: string, videoId: string) {
     youtubeTokens.set(streamId, nextPageToken);
   } else {
     youtubeTokens.delete(streamId);
+  }
+
+  if (processed > 0 || newVotes > 0) {
+    logger.info('Sync completado', { streamId, processed, newVotes, newPredictions, totalMessages: messages.length });
   }
 
   return {
@@ -207,6 +248,8 @@ syncRouter.post('/:id/mock/start', (req, res) => {
   mock.start();
   mockServices.set(req.params.id, mock);
 
+  logger.info('Mock chat iniciado', { streamId: req.params.id, intervalMs, voteProbability });
+
   res.json({ message: 'Mock iniciado', streamId: req.params.id });
 });
 
@@ -216,5 +259,8 @@ syncRouter.post('/:id/mock/stop', (req, res) => {
 
   mock.stop();
   mockServices.delete(req.params.id);
+
+  logger.info('Mock chat detenido', { streamId: req.params.id });
+
   res.json({ message: 'Mock detenido' });
 });
