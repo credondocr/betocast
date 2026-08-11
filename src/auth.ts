@@ -119,7 +119,24 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
     return next();
   }
 
+  // Check session first (direct access to backend)
   if (req.isAuthenticated()) {
+    return next();
+  }
+
+  // Check Authentik Forward Auth headers (access via admin/nginx proxy)
+  const authentikEmail = req.headers['x-authentik-email'] as string;
+  const authentikName = req.headers['x-authentik-name'] as string;
+  const authentikUsername = req.headers['x-authentik-username'] as string;
+
+  if (authentikEmail || authentikUsername) {
+    // User authenticated via Authentik Forward Auth
+    req.user = {
+      id: authentikUsername || authentikEmail || 'unknown',
+      email: authentikEmail || '',
+      name: authentikName || authentikUsername || '',
+    };
+    logger.debug('User authenticated via Forward Auth', { email: authentikEmail, username: authentikUsername });
     return next();
   }
 
