@@ -9,6 +9,7 @@ import { syncRouter } from './routes/sync.js';
 import { overlayRouter } from './routes/overlay.js';
 import { categoriesRouter } from './routes/categories.js';
 import { logger } from './logger.js';
+import { initAuth, requireAuth } from './auth.js';
 
 async function main() {
   logger.info('Iniciando BetoCast server...');
@@ -20,21 +21,33 @@ async function main() {
   app.use(cors());
   app.use(express.json());
 
+  initAuth(app);
+
   initSocket(httpServer);
 
-  app.use('/api/streams', streamsRouter);
-  app.use('/api/streams', syncRouter);
-  app.use('/api/categories', categoriesRouter);
   app.use('/overlay', overlayRouter);
+
+  app.use('/api/streams', requireAuth, streamsRouter);
+  app.use('/api/streams', requireAuth, syncRouter);
+  app.use('/api/categories', requireAuth, categoriesRouter);
 
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
+
+  app.get('/', (req, res) => {
+    if (req.isAuthenticated()) {
+      res.json({ message: 'BetoCast API', user: req.user });
+    } else {
+      res.redirect('/login');
+    }
   });
 
   httpServer.listen(config.port, () => {
     logger.info(`BetoCast server running on http://localhost:${config.port}`);
     logger.info(`API: http://localhost:${config.port}/api/streams`);
     logger.info(`Health: http://localhost:${config.port}/api/health`);
+    logger.info(`Auth: ${config.auth.enabled ? 'enabled' : 'disabled'}`);
   });
 
   const shutdown = (signal: string) => {
