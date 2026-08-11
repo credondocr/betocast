@@ -1,5 +1,5 @@
 const VOTE_REGEX = /#(\d{1,4})/g;
-const PREDICT_REGEX = /!predict\s+(?:gana\s+)?#(\d{1,4})/i;
+const PREDICT_REGEX = /!gana\s+#(\d{1,4})/i;
 
 export function parseVote(message: string): string | null {
   if (PREDICT_REGEX.test(message)) return null;

@@ -68,7 +68,7 @@ export class MockChatService extends EventEmitter {
 
     if (!user.hasPredicted && Math.random() < this.predictionProbability) {
       const carNum = CAR_NUMBERS[Math.floor(Math.random() * CAR_NUMBERS.length)];
-      message = `!predict #${carNum}`;
+      message = `!gana #${carNum}`;
       user.hasPredicted = true;
     } else if (!user.hasVoted && Math.random() < this.voteProbability) {
       const carNum = CAR_NUMBERS[Math.floor(Math.random() * CAR_NUMBERS.length)];

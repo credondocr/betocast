@@ -58,7 +58,7 @@ function getUnifiedOverlayHtml(stream: any, opts: {
   const emptyIcon = isPredictions ? '🔮' : '🏁';
   const emptyText = isPredictions ? 'Esperando predicciones...' : 'Esperando votos...';
   const hintHtml = isPredictions
-    ? '<div class="hint">Predice con <code>!predict #numero</code></div>'
+    ? '<div class="hint">Predice con <code>!gana #numero</code></div>'
     : '<div class="vote-hint"><span class="vote-hint-icon"></span>¿Quieres votar? Escribe en el chat <strong>#</strong> + número de tu piloto</div>';
   const countLabel = isPredictions ? 'predicciones' : 'votos';
   const footerStatLabel = isPredictions ? 'participantes' : 'votos';

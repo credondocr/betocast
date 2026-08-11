@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { api } from '@/lib/api';
-import type { PredictionResult, PredictionResolveResponse } from '@/types';
+import { useSocket } from '@/hooks/useSocket';
+import type { PredictionResolveResponse } from '@/types';
 import { Trophy, Users, Target } from 'lucide-react';
 
 interface PredictionManagerProps {
@@ -8,26 +9,9 @@ interface PredictionManagerProps {
 }
 
 export function PredictionManager({ streamId }: PredictionManagerProps) {
-  const [predictions, setPredictions] = useState<PredictionResult[]>([]);
-  const [totalPredictions, setTotalPredictions] = useState(0);
-  const [totalPredictors, setTotalPredictors] = useState(0);
+  const { predictionResults: predictions, predictionStats } = useSocket(streamId);
   const [resolving, setResolving] = useState(false);
   const [resolveResult, setResolveResult] = useState<PredictionResolveResponse | null>(null);
-
-  useEffect(() => {
-    loadPredictions();
-  }, [streamId]);
-
-  const loadPredictions = async () => {
-    try {
-      const data = await api.predictions.get(streamId);
-      setPredictions(data.results);
-      setTotalPredictions(data.stats.totalPredictions);
-      setTotalPredictors(data.stats.totalPredictors);
-    } catch (err) {
-      console.error('Error loading predictions:', err);
-    }
-  };
 
   const handleResolve = async (carNumber: string) => {
     if (resolving) return;
@@ -95,13 +79,13 @@ export function PredictionManager({ streamId }: PredictionManagerProps) {
         </h2>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Users size={14} />
-          <span><strong className="text-foreground">{totalPredictors}</strong> participantes</span>
+          <span><strong className="text-foreground">{predictionStats.totalPredictors}</strong> participantes</span>
         </div>
       </div>
 
       {predictions.length === 0 ? (
         <p className="text-sm text-muted-foreground text-center py-4">
-          No hay predicciones aún. Los usuarios pueden predecir con <code className="bg-secondary px-1 rounded">!predict #numero</code>
+          No hay predicciones aún. Los usuarios pueden predecir con <code className="bg-secondary px-1 rounded">!gana #numero</code>
         </p>
       ) : (
         <div className="space-y-3">
@@ -135,7 +119,7 @@ export function PredictionManager({ streamId }: PredictionManagerProps) {
       )}
 
       <div className="mt-4 pt-4 border-t border-border text-sm text-muted-foreground">
-        <span><strong className="text-foreground">{totalPredictions}</strong> predicciones totales</span>
+        <span><strong className="text-foreground">{predictionStats.totalPredictions}</strong> predicciones totales</span>
       </div>
     </div>
   );
